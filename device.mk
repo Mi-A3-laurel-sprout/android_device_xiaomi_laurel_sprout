@@ -58,6 +58,13 @@ PRODUCT_PACKAGES += \
 PRODUCT_PACKAGES_DEBUG += \
     bootctl
 
+# fastbootd
+PRODUCT_PACKAGES += \
+    fastbootd
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.fastbootd.available=true
+
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
     $(LOCAL_PATH)/overlay \
