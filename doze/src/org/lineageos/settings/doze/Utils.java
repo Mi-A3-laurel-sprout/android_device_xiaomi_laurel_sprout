@@ -20,8 +20,6 @@ package org.lineageos.settings.doze;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.PowerManager;
-import android.os.SystemClock;
 import android.os.UserHandle;
 import androidx.preference.PreferenceManager;
 import android.provider.Settings;
@@ -41,7 +39,6 @@ public final class Utils {
     protected static final String GESTURE_PICK_UP_KEY = "gesture_pick_up";
     protected static final String GESTURE_HAND_WAVE_KEY = "gesture_hand_wave";
     protected static final String GESTURE_POCKET_KEY = "gesture_pocket";
-    protected static final String WAKE_ON_GESTURE_KEY = "wake_on_gesture";
 
     protected static void startService(Context context) {
         if (DEBUG) Log.d(TAG, "Starting service");
@@ -84,16 +81,10 @@ public final class Utils {
                 DOZE_ENABLED, enable ? 1 : 0);
     }
 
-    protected static void wakeOrLaunchDozePulse(Context context) {
-        if (isWakeOnGestureEnabled(context)) {
-            if (DEBUG) Log.d(TAG, "Wake up display");
-            PowerManager powerManager = context.getSystemService(PowerManager.class);
-            powerManager.wakeUp(SystemClock.uptimeMillis(), PowerManager.WAKE_REASON_GESTURE, TAG);
-        } else {
-            if (DEBUG) Log.d(TAG, "Launch doze pulse");
-            context.sendBroadcastAsUser(
-                    new Intent(DOZE_INTENT), new UserHandle(UserHandle.USER_CURRENT));
-        }
+    protected static void launchDozePulse(Context context) {
+        if (DEBUG) Log.d(TAG, "Launch doze pulse");
+        context.sendBroadcastAsUser(new Intent(DOZE_INTENT),
+                new UserHandle(UserHandle.USER_CURRENT));
     }
 
     protected static void enableGesture(Context context, String gesture, boolean enable) {
@@ -104,10 +95,6 @@ public final class Utils {
     protected static boolean isGestureEnabled(Context context, String gesture) {
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getBoolean(gesture, false);
-    }
-
-    protected static boolean isWakeOnGestureEnabled(Context context) {
-        return isGestureEnabled(context, WAKE_ON_GESTURE_KEY);
     }
 
     protected static boolean isPickUpEnabled(Context context) {
