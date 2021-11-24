@@ -23,8 +23,7 @@
 
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
-    $(LOCAL_PATH) \
-    hardware/google/interfaces
+    $(LOCAL_PATH)
 
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \
