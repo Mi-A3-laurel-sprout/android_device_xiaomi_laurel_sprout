@@ -26,7 +26,7 @@
 namespace android {
 namespace perfmgr {
 
-using std::literals::chrono_literals::operator""ms;
+using namespace std::chrono_literals;
 
 constexpr auto kSLEEP_TOLERANCE_MS = 50ms;
 
