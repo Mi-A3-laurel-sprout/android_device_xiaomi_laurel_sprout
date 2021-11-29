@@ -63,12 +63,12 @@ cc_defaults {
 
 filegroup {
     name: "pixel_powerstats_rc",
-    srcs: ["android.hardware.power.stats-service.laurel_sprout.rc"],
+    srcs: ["android.hardware.power.stats-service.pixel.rc"],
 }
 
 filegroup {
     name: "pixel_powerstats_xml",
-    srcs: ["android.hardware.power.stats-service.laurel_sprout.xml"],
+    srcs: ["android.hardware.power.stats-service.pixel.xml"],
 }
 
 cc_defaults {
