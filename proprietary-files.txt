@@ -1,4 +1,4 @@
-# laurel_sprout package version: V11.0.22.0.QFQMIXM, unless stated otherwise
+# laurel_sprout package version: QKQ1.190910.002 V11.0.26.0.QFQMIXM release-keys, unless stated otherwise
 
 # Audio hardware
 vendor/lib/hw/audio.primary.trinket.so
