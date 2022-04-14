@@ -318,16 +318,11 @@ $(foreach target, $(shell cat $(LOCAL_PATH)/configs/vndk/vndk.txt), $(eval PRODU
 
 PRODUCT_EXTRA_VNDK_VERSIONS := 28 29 30
 
-# Insmod files
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/init.insmod.cfg:$(TARGET_COPY_OUT_VENDOR)/etc/init.insmod.cfg
-
 # Init
 PRODUCT_PACKAGES += \
     fstab.qcom \
     init.class_main.sh \
     init.msm.usb.configfs.rc \
-    init.insmod.sh \
     init.qcom.early_boot.sh \
     init.qcom.post_boot.sh \
     init.qcom.rc \

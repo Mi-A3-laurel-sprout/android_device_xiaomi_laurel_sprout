@@ -12,9 +12,6 @@
 /sys/devices/platform/soc/4a88000.i2c/i2c-1/1-0038/touch/tp_dev/fod_status          u:object_r:sysfs_fod:s0
 /sys/class/touch/tp_dev/fod_status                                                  u:object_r:sysfs_fod:s0
 
-# Executable
-/vendor/bin/init\.insmod\.sh                                    u:object_r:init-insmod-sh_exec:s0
-
 # HALs
 /(vendor|system/vendor)/bin/hw/android\.hardware\.biometrics\.fingerprint@2.3-service\.laurel_sprout            u:object_r:hal_fingerprint_default_exec:s0
 
