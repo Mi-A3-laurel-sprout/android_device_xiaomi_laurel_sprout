@@ -128,6 +128,7 @@ debug.sf.latch_unsignaled=1
 debug.sdm.support_writeback=0
 ro.opengles.version=196610
 ro.config.avoid_gfx_accel=true 
+debug.sf.disable_client_composition_cache=1
 ro.hardware.egl=adreno
 ro.hardware.vulkan=adreno
 ro.surface_flinger.force_hwc_copy_for_virtual_displays=true
