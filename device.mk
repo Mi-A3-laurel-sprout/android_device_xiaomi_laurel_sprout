@@ -29,6 +29,10 @@ PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
     hardware/google/interfaces
 
+# Ambient Display
+PRODUCT_PACKAGES += \
+    XiaomiDoze
+
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \
     RUN_POSTINSTALL_system=true \
