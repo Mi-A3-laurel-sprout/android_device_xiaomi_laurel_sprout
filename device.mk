@@ -21,9 +21,6 @@
 # definition file).
 #
 
-# Inherit properties
-$(call inherit-product, $(LOCAL_PATH)/properties.mk)
-
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
