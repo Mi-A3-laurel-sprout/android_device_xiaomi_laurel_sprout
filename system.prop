@@ -3,6 +3,9 @@ persist.bluetooth.sbc_hd_higher_bitrate=1
 persist.bluetooth.a2dp_offload.cap=sbc-aac-aptx-aptxhd-ldac
 persist.bluetooth.a2dp_offload.disabled=false
 
+# Camera
+vendor.camera.aux.packagelist=org.codeaurora.snapcam,com.android.camera,com.xiaomi.cameratools,com.factory.mmigroup
+
 # Charger
 ro.charger.disable_init_blank=true
 ro.charger.enable_suspend=true
