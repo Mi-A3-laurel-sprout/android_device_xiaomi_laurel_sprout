@@ -42,12 +42,7 @@ TARGET_BOARD_PLATFORM := trinket
 PRODUCT_PACKAGES += \
     android.hardware.boot@1.1-impl-qti \
     android.hardware.boot@1.1-impl-qti.recovery \
-    android.hardware.boot@1.1-service \
-    bootctrl.trinket \
-    bootctrl.trinket.recovery
-
-PRODUCT_PACKAGES_DEBUG += \
-    bootctl
+    android.hardware.boot@1.1-service 
 
 # Overlays
 DEVICE_PACKAGE_OVERLAYS += \
