@@ -2667,12 +2667,16 @@ vendor/lib64/libswvdec.so|88ccaf08f803029dcd6cd64d2433968569c591b8
 vendor/lib64/libsysmon_cdsp_skel.so|e5ba4d173b0e09d736b16474ed2f57874cb91916
 vendor/lib64/vendor.qti.hardware.camera.device@3.2.so|cd89b991787cc713370a5b3ae9e352edf58f47ad
 
-# Camera provider
+# Camera misc
+lib/android.hardware.camera.device@1.0.so|9b0a9196fe3142e39a1285e9c2247b35cda55f23
+lib/android.hardware.camera.device@3.2.so|43ecddd03c24a85408983313b34d2f744d0a40ff
+lib/android.hardware.camera.device@3.3.so|08e038d9fcfe29e1c4c867554b0f8764a643ed6e
+lib/android.hardware.camera.device@3.4.so|2265914782ef823663b91335aacd378f5bf2a795
+lib/android.hardware.camera.device@3.5.so|ff486c77f1ca750d32824fca8560f4497a80ca95
 lib/vendor.qti.hardware.camera.device@3.2.so|34d7200dc40468bc4fd427b441af02df8e0d9d70
-vendor/lib/android.hardware.camera.provider@2.4-legacy.so|63e06b4e1a7c022596401a0225180fa8fbda644c
-vendor/lib/vendor.qti.hardware.camera.device@3.2.so|2a231ab33047ccea10490ccd156656377fa2512d
-vendor/lib64/android.hardware.camera.provider@2.4-legacy.so|ba1ae58619629c0ffc41ac42f7ce1ee6f6ffa5ac
-vendor/lib64/vendor.qti.hardware.camera.device@3.2.so|cd89b991787cc713370a5b3ae9e352edf58f47ad
+
+# Camera service
+lib/libcameraservice.so|96141d10b5860a728d3742cd5a5d50c2233d4f5d
 
 # Consumerir
 vendor/lib64/hw/consumerir.default.so:vendor/lib64/hw/consumerir.trinket.so|22cfe98a0049a31f6c73e4fe4c1fac4bd40313ba
