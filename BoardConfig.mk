@@ -218,7 +218,6 @@ WPA_SUPPLICANT_VERSION := VER_0_8_X
 
 # Fingerprint
 TARGET_SURFACEFLINGER_UDFPS_LIB := //$(DEVICE_PATH):libudfps_extension.laurel_sprout
-TARGET_USES_FOD_ZPOS := true
 
 # Inherit the proprietary files
 -include vendor/xiaomi/laurel_sprout/BoardConfigVendor.mk
