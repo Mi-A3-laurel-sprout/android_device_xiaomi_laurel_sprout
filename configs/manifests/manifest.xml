@@ -235,7 +235,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
    <hal format="hidl">
        <name>vendor.qti.ims.factory</name>
        <transport>hwbinder</transport>
-       <fqname>@1.0::IImsFactory/default</fqname>
+       <fqname>@1.1::IImsFactory/default</fqname>
    </hal>
     <!-- WifiStats HAL service -->
     <hal format="hidl">
