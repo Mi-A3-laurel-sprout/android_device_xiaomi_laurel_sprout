@@ -534,6 +534,12 @@ vendor/lib64/libgnss.so|84658db74f558a37fa26b1b8eb114b2122622406
 vendor/lib64/libgnsspps.so|58701e7835726d6bb4fba3e87e13c7793720abd8
 vendor/lib64/libgps.utils.so|f2e251768bb07d2994652ba3cc16dc206415dbf2
 
+# Qcc - from sofiap_sprout-user-12-S0PR32.44-11-8-6de89-release-keys
+vendor/lib/libqcc_file_agent.so|86fccba78bbc479ce513c8e19bc04279b3e6e185
+vendor/lib/vendor.qti.hardware.qccsyshal@1.0.so|b38c7e45c5d7dec91f3bdedd1af3c0fd98564fc1
+vendor/lib64/libqcc_file_agent.so|cd70ce305d5036a027060aa989b0dcbcfab8edb6
+vendor/lib64/vendor.qti.hardware.qccsyshal@1.0.so|3ff445db2dd2db1a1068fe70a54a6c04fbdd3123
+
 # Hotword - from apollo qssi:11/RKQ1.200826.002/V12.1.2.0.RJDMIXM
 system_ext/etc/permissions/com.android.hotwordenrollment.common.util.xml|563a58554d9c0dd0608552b644fbf74519a447bb
 system_ext/framework/com.android.hotwordenrollment.common.util.jar|0492cd3db2e253e23b78e56fa8ea7b3a4b15edeb
