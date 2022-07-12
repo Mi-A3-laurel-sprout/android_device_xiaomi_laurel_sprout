@@ -396,14 +396,10 @@ TARGET_COMMON_QTI_COMPONENTS += \
     av \
     bt \
     display \
-    gps \
-    media-legacy \
     overlay \
     perf \
-    telephony \
     usb \
     vibrator \
-    wfd \
     wlan
 
 # RenderScript HAL
