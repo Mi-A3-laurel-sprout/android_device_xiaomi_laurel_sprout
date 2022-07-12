@@ -399,6 +399,7 @@ TARGET_COMMON_QTI_COMPONENTS += \
     audio \
     bt \
     overlay \
+    perf \
     usb \
     vibrator \
     wlan
