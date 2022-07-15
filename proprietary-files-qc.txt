@@ -888,16 +888,6 @@ vendor/lib64/unnhal-acc-hvx.so|00eb79608cb6e3f19eaf9389632fdbfa03b2df62
 vendor/bin/ipacm-diag|dabb25c27b4687c8adc77f6b6cb98f0053aca970
 vendor/etc/init/ipacm-diag.rc|e3cee56d2e3ca6bf9aafb827827ebea369fc2897
 
-# PASR HAL - LA.UM.9.11.r1-04500-NICOBAR.0
-vendor/bin/hw/vendor.qti.power.pasrmanager@1.0-service|27dd1f54cfdc65f365c6b63e9b13bdb6ade5aa70
-vendor/etc/init/vendor.qti.power.pasrmanager@1.0-service.rc|b34c1b9179c89cd47adce145bae9a609e5141bc0
-vendor/lib/vendor.qti.memory.pasrmanager@1.0.so|3cf7252c5d8e7525344ef44d740d5f241d0f1da5
-vendor/lib/vendor.qti.power.pasrmanager@1.0.so|23991140d874c6d498e8f0f8b37c0b8ec8e5e1d5
-vendor/lib64/hw/vendor.qti.power.pasrmanager@1.0-impl.so|4e83bd83fa439f15dc3c0a2256eadd81d6c45386
-vendor/lib64/vendor.qti.memory.pasrmanager@1.0.so|c058fe11f441d9f7843b6d72174549d7b02919d6
-vendor/lib64/vendor.qti.power.pasrmanager@1.0.so|856995253f2940eb7c7bf9c57d44b8a86a1c19d0
--vendor/app/pasrservice/pasrservice.apk|03cb6a835f60a388632a992b1e96e9d0cc5f9050
-
 # PD - LA.UM.9.11.r1-04500-NICOBAR.0
 vendor/bin/pd-mapper|3ef75bfcf8d64a8a3d4dcfae483dc1041f35236b
 vendor/lib/libpdmapper.so|a81feb95f7ef79c2b19e0d8335e2e336510de0ef
