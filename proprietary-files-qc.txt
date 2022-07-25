@@ -858,8 +858,6 @@ vendor/lib64/libswvdec.so|88ccaf08f803029dcd6cd64d2433968569c591b8
 vendor/lib64/vendor.qti.hardware.vpp@1.1.so|3c03d83e1edc7d7e6b48c5d680efd50cd9e17646
 vendor/lib64/vendor.qti.hardware.vpp@1.2.so|a38c2961f2c2256da36ae917561dad0c85ac7110
 vendor/lib64/vendor.qti.hardware.vpp@1.3.so|b6e10f24e580e36478626fb755827010a8b018d6
--vendor/lib/libMpeg4SwEncoder.so|92698c2830156bbca6297ad599d9e0f916139f00
--vendor/lib64/libMpeg4SwEncoder.so|46cca30c76db78d8c5d6b99c2c7e5a00c414bc4f
 
 # MMI - LA.UM.9.11.r1-04500-NICOBAR.0
 vendor/bin/hw/vendor.qti.hardware.factory@1.0-service|f646366b50b50637785d26173663256c8861951f
