@@ -982,7 +982,7 @@ vendor/lib/libqcci_legacy.so|24366d296464a000e33169a20fed2f5b30692d20
 vendor/lib/libqdi.so|7c33481106052e788c57764bea2ab9bd506d08ca
 vendor/lib/libqdp.so|a75302dd1999919d92e1a3fb423bf54f8693fd34
 vendor/lib/libqmi.so|786e5becce9a85bf1ab6e8878637c89fdf944548
-vendor/lib/libqmi_cci.so|07bc7ecacf89404a7ea54986bce85600493e6792
+-vendor/lib/libqmi_cci.so|07bc7ecacf89404a7ea54986bce85600493e6792
 vendor/lib/libqmi_client_helper.so|982139b531975b8a2639ee793ee8d712df6701b0
 vendor/lib/libqmi_client_qmux.so|afe539909f7c4fa85cf1f302283b507c4c2fad50
 vendor/lib/libqmi_common_so.so|d048a69188f6159868d3cbf6636dae8fa823137e
@@ -999,7 +999,7 @@ vendor/lib64/libqcci_legacy.so|7e9d4928684552b6908aefd57f0b3647e051c3e1
 vendor/lib64/libqdi.so|cbd1fc6c9697500571813e1f2da31674ad3d2742
 vendor/lib64/libqdp.so|864d579dec1028a475499f24c8b11102899dee4e
 vendor/lib64/libqmi.so|d89a12f5daf542c9960c3a69d8443f87f8e01c97
-vendor/lib64/libqmi_cci.so|7f81fc96f5efd5333265ad4a3b4de3627e30d4c9
+-vendor/lib64/libqmi_cci.so|7f81fc96f5efd5333265ad4a3b4de3627e30d4c9
 vendor/lib64/libqmi_client_helper.so|66b17039025f81eda35a4ab592a243083f733a9e
 vendor/lib64/libqmi_client_qmux.so|c4c42334ce501fa8b18f949399dd4b95b9bc73a0
 vendor/lib64/libqmi_common_so.so|9d721fdb1b71a5bb619512c620cbda48eaa3a0cd
