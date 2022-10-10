@@ -407,7 +407,9 @@ vendor/lib/liboemcrypto.so
 vendor/lib64/liboemcrypto.so
 
 # DRM - QSEECOMD - qssi-user 12 SKQ1.211006.001 V13.0.3.0.SJKMIXM release-keys
+vendor/lib/libops.so|4ea467ca5899ffb105e5bfd9670dac6f1ddf002f
 vendor/lib/libspl.so|ec1ae86b1727e33c87fd8c00ebe02d8734510745
+vendor/lib64/libops.so|17439c5decb8e42b0b6a747bf73c263ec0ea4cb1
 vendor/lib64/libspl.so|e2b3e2dd28b0eee567d72de696cd1e01288ae06f
 
 # FastCV - LA.UM.9.11.r1-04500-NICOBAR.0
