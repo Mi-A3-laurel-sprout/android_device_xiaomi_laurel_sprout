@@ -477,6 +477,7 @@ PRODUCT_PACKAGES += \
     hostapd \
     libwifi-hal-qcom \
     libwifi-hal-ctrl \
+    libwpa_client \
     wcnss_service \
     WifiOverlay \
     wpa_supplicant \
