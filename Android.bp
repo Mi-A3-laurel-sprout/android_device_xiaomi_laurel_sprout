@@ -2,6 +2,7 @@ soong_namespace {
     imports: [
     "hardware/qcom-caf/bootctrl",
     "hardware/google/interfaces",
+    "hardware/interfaces",
     "vendor/qcom/opensource/dataservices",
     ],
 }

@@ -24,6 +24,7 @@
 # Soong namespaces
 PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
+    hardware/interfaces \
     hardware/google/interfaces \
     vendor/qcom/opensource/dataservices
 
