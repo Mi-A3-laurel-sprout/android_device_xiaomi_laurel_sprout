@@ -483,7 +483,9 @@ PRODUCT_PACKAGES += \
     libyuv \
     libyuv.vendor \
     libjpeg \
-    libjpeg.vendor
+    libjpeg.vendor \
+    libexif \
+    libexif.vendor
 
 # Wifi
 PRODUCT_PACKAGES += \
