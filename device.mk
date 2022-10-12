@@ -479,7 +479,9 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES += \
     libfmq \
-    libfmq.vendor
+    libfmq.vendor \
+    libyuv \
+    libyuv.vendor
 
 # Wifi
 PRODUCT_PACKAGES += \
