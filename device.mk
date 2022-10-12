@@ -481,7 +481,9 @@ PRODUCT_PACKAGES += \
     libfmq \
     libfmq.vendor \
     libyuv \
-    libyuv.vendor
+    libyuv.vendor \
+    libjpeg \
+    libjpeg.vendor
 
 # Wifi
 PRODUCT_PACKAGES += \
