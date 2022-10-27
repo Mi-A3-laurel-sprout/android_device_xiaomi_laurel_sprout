@@ -124,6 +124,9 @@ DEVICE_MATRIX_FILE := $(DEVICE_PATH)/configs/manifests/compatibility_matrix.xml
 # LMKD
 TARGET_LMKD_STATS_LOG := true
 
+# HWUI
+HWUI_COMPILE_FOR_PERF := true
+
 # Init
 TARGET_INIT_VENDOR_LIB := //$(DEVICE_PATH):libinit_trinket
 TARGET_RECOVERY_DEVICE_MODULES := libinit_trinket
