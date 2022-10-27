@@ -167,6 +167,16 @@ ro.vendor.extension_library=libqti-perfd-client.so
 # Pre-rendering
 ro.vendor.perf.scroll_opt=true
 
+# USB
+vendor.usb.diag.func.name=diag
+vendor.usb.dpl.inst.name=dpl
+vendor.usb.qdss.inst.name=qdss
+vendor.usb.rmnet.func.name=gsi
+vendor.usb.rmnet.inst.name=rmnet
+vendor.usb.rndis.func.name=gsi
+vendor.usb.use_ffs_mtp=0
+vendor.usb.use_gadget_hal=0
+
 # Radio
 persist.radio.multisim.config=dsds
 persist.vendor.radio.apm_sim_not_pwdn=1
