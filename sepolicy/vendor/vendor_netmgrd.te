@@ -1,0 +1,1 @@
+allow vendor_netmgrd proc_net:file { getattr  read };
