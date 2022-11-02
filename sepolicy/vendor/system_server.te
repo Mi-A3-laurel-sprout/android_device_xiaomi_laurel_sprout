@@ -1,3 +1,5 @@
 allow system_server vendor_camera_prop:file { r_file_perms };
+allow system_server proc_net:file { getattr  read };
+allow system_server sysfs:file { getattr  open  read };
 
 allow system_server app_zygote:process getpgid;
