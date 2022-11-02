@@ -3,6 +3,11 @@ allow init vendor_file:file { execute };
 allow init same_process_hal_file:file { execute };
 allow init hwservicemanager:binder { call };
 allow init adsprpcd_file:file mounton;
+allow init proc_net:file { open };
+allow init shell_exec:file { execute_no_trans };
+allow init sysfs_fod:file { setattr };
+allow init vendor_sysfs_graphics:lnk_file { read };
+
 set_prop(init, vendor_camera_prop)
 
 # Smart charging
