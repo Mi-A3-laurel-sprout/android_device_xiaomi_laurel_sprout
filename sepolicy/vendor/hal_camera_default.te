@@ -23,3 +23,4 @@ allow hal_camera_default vendor_default_prop:property_service set;
 allow hal_camera_default vendor_mpctl_prop:file { open read };
 allow hal_camera_default camera_persist_file:dir { r_dir_perms };
 allow hal_camera_default camera_persist_file:file { r_file_perms };
+allow hal_camera_default bootanim_system_prop:file { read };
