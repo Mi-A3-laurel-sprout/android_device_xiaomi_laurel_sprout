@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2022 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- App/Activities -->
+    <string name="app_name">Camera</string>
+    <string name="video_camera_label">Camcorder</string>
+
+    <!-- Button descriptions -->
+    <string name="flip_camera_button_description">Flip camera</string>
+    <string name="gallery_button_description">Gallery</string>
+    <string name="photo_mode_button_description">Switch to photo mode</string>
+    <string name="qr_mode_button_description">Switch to QR scanner mode</string>
+    <string name="settings_back_button_description">Go back to camera mode</string>
+    <string name="shutter_button_description">Shutter</string>
+    <string name="video_mode_button_description">Switch to video mode</string>
+    <string name="video_recording_state_button_description">Pause/resume video recording</string>
+
+    <!-- Secondary button text -->
+    <string name="timer_off">TIMER OFF</string>
+    <string name="timer_3">TIMER 3s</string>
+    <string name="timer_10">TIMER 10s</string>
+
+    <string name="aspect_ratio_4_3">4:3</string>
+    <string name="aspect_ratio_16_9">16:9</string>
+
+    <string name="video_quality_sd">480p</string>
+    <string name="video_quality_hd">720p</string>
+    <string name="video_quality_fhd">1080p</string>
+    <string name="video_quality_uhd">2160p</string>
+
+    <string name="video_framerate_auto">AUTO FPS</string>
+    <string name="video_framerate_24">24 FPS</string>
+    <string name="video_framerate_30">30 FPS</string>
+    <string name="video_framerate_60">60 FPS</string>
+
+    <string name="effect_none">NONE</string>
+    <string name="effect_bokeh">BOKEH</string>
+    <string name="effect_hdr">HDR</string>
+    <string name="effect_night">NIGHT</string>
+    <string name="effect_face_retouch">FACE RETOUCH</string>
+    <string name="effect_auto">AUTO</string>
+
+    <string name="grid_off">GRID OFF</string>
+    <string name="grid_on_3">GRID 3x3</string>
+    <string name="grid_on_4">GRID 4x4</string>
+    <string name="grid_on_goldenratio">GRID φ</string>
+
+    <string name="mic_off">MIC OFF</string>
+    <string name="mic_on">MIC ON</string>
+
+    <string name="settings">SETTINGS</string>
+
+    <!-- Selector chip -->
+    <string name="selector_photo">PHOTO</string>
+    <string name="select_video">VIDEO</string>
+    <string name="select_scan">SCAN</string>
+
+    <!-- Toast messages -->
+    <string name="app_permissions_toast">Permissions not granted by the user.</string>
+    <string name="camcorder_unsupported_toast">No camera supports video recoding.</string>
+
+    <!-- QR dialog -->
+    <string name="qr_copy_description">Copy to clipboard</string>
+    <string name="qr_icon_description">Icon</string>
+    <string name="qr_share_description">Share</string>
+    <string name="qr_text">Text</string>
+
+    <!-- Settings title -->
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="general_header">General</string>
+    <string name="photos_header">Photos</string>
+    <string name="advanced_header">Advanced</string>
+
+    <!-- General Preferences -->
+    <string name="bright_screen_title">Bright screen</string>
+    <string name="bright_screen_sumary">Locks brightness to 100%</string>
+    <string name="save_location_title">Save location data</string>
+    <string name="save_location_summary">Include GPS location in metadata</string>
+    <string name="save_location_toast">Location permissions not granted by the user.</string>
+    <string name="shutter_sound_title">Shutter sound</string>
+    <string name="shutter_sound_summary">Play a sound on capture</string>
+
+    <!-- Photo Preferences -->
+    <string name="photo_capture_mode_title">Capture mode</string>
+    <string name="photo_capture_mode_maximize_quality">Maximize quality</string>
+    <string name="photo_capture_mode_minimize_latency">Minimize latency</string>
+    <string name="photo_capture_mode_zsl">Zero shutter lag (experimental)</string>
+
+    <!-- Advanced Preferences -->
+    <string name="leveler_title">Leveler</string>
+    <string name="leveler_summary">Indicator that shows device orientation</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_selfie">Take a selfie</string>
+    <string name="shortcut_video">Take a video</string>
+    <string name="shortcut_qr">Scan a barcode</string>
+</resources>

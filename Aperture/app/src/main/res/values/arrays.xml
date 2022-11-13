@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     SPDX-FileCopyrightText: 2022 The LineageOS Project
+     SPDX-License-Identifier: Apache-2.0
+-->
+<resources>
+    <!-- Photo capture mode Preference -->
+    <string-array name="photo_capture_mode_entries" translatable="false">
+        <item>@string/photo_capture_mode_maximize_quality</item>
+        <item>@string/photo_capture_mode_minimize_latency</item>
+        <item>@string/photo_capture_mode_zsl</item>
+    </string-array>
+
+    <string-array name="photo_capture_mode_values" translatable="false">
+        <item>maximize_quality</item>
+        <item>minimize_latency</item>
+        <item>zero_shutter_lag</item>
+    </string-array>
+</resources>
