@@ -114,8 +114,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/etc/apns-conf.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/apns-conf.xml
 
 # ATRACE_HAL
-PRODUCT_PACKAGES += \
-    android.hardware.atrace@1.0-service
+#PRODUCT_PACKAGES += \
+#    android.hardware.atrace@1.0-service
 
 # Audio
 PRODUCT_PACKAGES += \
