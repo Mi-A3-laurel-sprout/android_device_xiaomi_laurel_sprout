@@ -9,7 +9,7 @@
 
     <!-- List of ID of auxiliary cameras that must be ignored by the app. -->
     <string-array name="config_ignoredAuxCameraIds">
-        <!-- No camera is ignored by default. -->
+        <item>20</item>
     </string-array>
 
     <!-- Decide whether to ignore auxiliary cameras that
