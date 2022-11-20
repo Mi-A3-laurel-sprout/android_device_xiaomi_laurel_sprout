@@ -57,7 +57,8 @@ DEVICE_PACKAGE_OVERLAYS += \
 #RRO Overlays
 PRODUCT_PACKAGES += \
     XiaomiFrameworks \
-    XiaomiSystemUI
+    XiaomiSystemUI \
+    UdfpsSystemUI
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
