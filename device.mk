@@ -59,7 +59,8 @@ PRODUCT_PACKAGES += \
     XiaomiFrameworks \
     XiaomiSystemUI \
     UdfpsSystemUI \
-    RCMSystemUI
+    RCMSystemUI \
+    RCMFramework
 
 PRODUCT_ENFORCE_RRO_TARGETS := *
 
