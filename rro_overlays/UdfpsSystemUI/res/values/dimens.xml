@@ -20,4 +20,9 @@
     <!-- Padding for the lock icon on the keyguard. In pixels - should not scale with display size.
          (Inner space from radius of bg circle to amount of pixels)-->
     <dimen name="lock_icon_padding">22px</dimen>
+
+    <!-- The maximum offset for the under-display fingerprint sensor (UDFPS) icon in either
+         direction that elements are moved to prevent burn-in on AOD-->
+    <dimen name="udfps_burn_in_offset_x">6px</dimen>
+    <dimen name="udfps_burn_in_offset_y">6px</dimen>
 </resources>
