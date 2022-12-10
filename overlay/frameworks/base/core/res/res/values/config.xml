@@ -283,5 +283,8 @@
          manager will disable alpha trasformation in animations where not
          strictly needed. -->
     <bool name="config_sf_limitedAlpha">true</bool>
+    
+    <!-- Default dialer -->
+    <string name="config_defaultDialer">com.android.dialer</string>
 
 </resources>
