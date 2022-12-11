@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2018-2021 Syberia Project
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ -->
+
+<resources>
+
+    <!-- Maximum vertical offset of statusbar for burn-in protection -->
+    <dimen name="status_bar_offset_max_y">4dp</dimen>
+
+    <!-- Default horizontal drawable padding for status bar icons. -->
+    <dimen name="status_bar_horizontal_padding">2.5dp</dimen>
+
+    <!-- The end padding for the clock in the status bar. -->
+    <dimen name="status_bar_clock_end_padding">0dp</dimen>
+
+    <!-- Starting padding for a left-aligned status bar clock -->
+    <dimen name="status_bar_left_clock_starting_padding">0dp</dimen>
+
+    <!-- Spacing between system icons. -->
+    <dimen name="status_bar_system_icon_spacing">0dp</dimen>
+
+    <!-- opacity at which Notification icons will be drawn in the status bar -->
+    <item type="dimen" name="status_bar_icon_drawing_alpha">90%</item>
+
+    <!-- the padding on the start of the statusbar -->
+    <dimen name="status_bar_padding_start">8dp</dimen>
+
+    <!-- the padding on the end of the statusbar -->
+    <dimen name="status_bar_padding_end">0dp</dimen>
+
+</resources>
