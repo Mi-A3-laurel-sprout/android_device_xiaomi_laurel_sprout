@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2018-2019 The LineageOS Project
+# Copyright (C) 2018-2019 The lmodroidOS Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,9 +14,9 @@
 # limitations under the License.
 
 PRODUCT_MAKEFILES := \
-    $(LOCAL_DIR)/syberia_laurel_sprout.mk
+    $(LOCAL_DIR)/lmodroid_laurel_sprout.mk
 
 COMMON_LUNCH_CHOICES := \
-    syberia_laurel_sprout-user \
-    syberia_laurel_sprout-userdebug \
-    syberia_laurel_sprout-eng
+    lmodroid_laurel_sprout-user \
+    lmodroid_laurel_sprout-userdebug \
+    lmodroid_laurel_sprout-eng
