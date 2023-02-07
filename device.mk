@@ -138,9 +138,7 @@ PRODUCT_PACKAGES += \
     android.hardware.bluetooth.audio@2.1-impl \
     android.hardware.bluetooth.audio-impl \
     audio.bluetooth.default \
-    com.qualcomm.qti.bluetooth_audio@1.0.vendor \
     libbluetooth_audio_session \
-    libldacBT_dec \
     vendor.qti.hardware.bluetooth_audio@2.1.vendor \
     vendor.qti.hardware.btconfigstore@1.0.vendor \
     vendor.qti.hardware.btconfigstore@2.0.vendor
@@ -176,7 +174,6 @@ PRODUCT_COPY_FILES += \
 # ANT+
 PRODUCT_PACKAGES += \
     AntHalService-Soong \
-    com.dsi.ant.antradio_library \
     com.dsi.ant@1.0.vendor
 
 # Camera
@@ -213,7 +210,6 @@ PRODUCT_COPY_FILES += \
 
 # Config Store
 PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.0-service \
     android.hardware.configstore@1.1-service 
 
 # Display
@@ -221,13 +217,10 @@ PRODUCT_PACKAGES += \
     gralloc.trinket \
     hwcomposer.trinket \
     memtrack.trinket \
-    libdisplayconfig \
-    libdisplayconfig.vendor \
     libdisplayconfig.qti \
     libtinyxml \
     libvulkan \
-    libqdMetaData \
-    libqdMetaData.system
+    libqdMetaData
 
 PRODUCT_PACKAGES += \
     android.frameworks.displayservice@1.0 \
@@ -310,7 +303,6 @@ endif
 # HIDL
 PRODUCT_PACKAGES += \
     android.hidl.base@1.0 \
-    android.hidl.base@1.0_system \
     android.hidl.manager@1.0
   
 # HIDL VNDK
@@ -370,7 +362,6 @@ PRODUCT_PACKAGES += \
     libavservices_minijail \
     libavservices_minijail.vendor \
     libc2dcolorconvert \
-    libhypv_intercept \
     libmm-omxcore \
     libOmxCore \
     libOmxAacEnc \
@@ -385,7 +376,6 @@ PRODUCT_PACKAGES += \
 # Power
 PRODUCT_PACKAGES += \
     android.hardware.power@1.3-service.laurel_sprout-libperfmgr \
-    android.hardware.power.stats-service.laurel_sprout \
     vendor.qti.hardware.perf@2.2.vendor
 
 PRODUCT_COPY_FILES += \
@@ -508,7 +498,6 @@ PRODUCT_COPY_FILES += \
 
 # WiFi Display
 PRODUCT_PACKAGES += \
-    libaacwrapper \
     libnl \
     libwfdaac_vendor
 
