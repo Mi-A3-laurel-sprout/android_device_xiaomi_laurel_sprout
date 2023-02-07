@@ -10,6 +10,3 @@ allow init vendor_sysfs_graphics:lnk_file { read };
 
 set_prop(init, vendor_camera_prop)
 
-# Smart charging
-allow init sysfs_battery_supply:file { setattr };
-
