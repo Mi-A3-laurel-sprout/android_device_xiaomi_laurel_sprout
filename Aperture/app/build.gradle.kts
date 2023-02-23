@@ -52,14 +52,15 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
+    implementation("androidx.appcompat:appcompat:1.6.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+    implementation("androidx.exifinterface:exifinterface:1.3.6")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
     implementation("androidx.preference:preference:1.2.0")
-    implementation("com.google.android.material:material:1.8.0-alpha02")
+    implementation("com.google.android.material:material:1.9.0-alpha01")
 
     // CameraX core library using the camera2 implementation
-    val cameraxVersion = "1.2.0-rc02"
+    val cameraxVersion = "1.3.0-alpha03"
     // The following line is optional, as the core library is included indirectly by camera-camera2
     implementation("androidx.camera:camera-core:${cameraxVersion}")
     implementation("androidx.camera:camera-camera2:${cameraxVersion}")
@@ -71,6 +72,13 @@ dependencies {
     implementation("androidx.camera:camera-view:${cameraxVersion}")
     // If you want to additionally use the CameraX Extensions library
     implementation("androidx.camera:camera-extensions:${cameraxVersion}")
+
+    // Media3
+    val media3Version = "1.0.0-beta02"
+    // For media playback using ExoPlayer
+    implementation("androidx.media3:media3-exoplayer:$media3Version")
+    // For building media playback UIs
+    implementation("androidx.media3:media3-ui:$media3Version")
 
     // ZXing
     implementation("com.google.zxing:core:3.5.0")
@@ -122,6 +130,7 @@ tasks.register("generateBp") {
         when (it) {
             "androidx.constraintlayout:constraintlayout" -> "androidx-constraintlayout_constraintlayout"
             "com.google.auto.value:auto-value-annotations" -> "auto_value_annotations"
+            "com.google.guava:guava" -> "guava"
             "com.google.guava:listenablefuture" -> "guava"
             "org.jetbrains.kotlin:kotlin-stdlib" -> "kotlin-stdlib"
             "org.jetbrains.kotlin:kotlin-stdlib-jdk8" -> "kotlin-stdlib-jdk8"
@@ -133,8 +142,10 @@ tasks.register("generateBp") {
     val isAvailableInAosp = { group: String, artifactId: String ->
         when {
             group.startsWith("androidx") -> {
-                // We provide our own androidx.camera & lifecycle-common
-                !group.startsWith("androidx.camera") && artifactId != "lifecycle-common"
+                // We provide our own androidx.{camera,media3} & lifecycle-common
+                !group.startsWith("androidx.camera") &&
+                        !group.startsWith("androidx.media3") &&
+                        artifactId != "lifecycle-common"
             }
             group.startsWith("org.jetbrains") -> true
             group == "com.google.auto.value" -> true
@@ -250,7 +261,7 @@ tasks.register("generateBp") {
                         dep == "org.jetbrains.kotlin:kotlin-stdlib-common" -> false
                         else -> true
                     }
-                }.toMutableList()
+                }.distinct().toMutableList()
 
                 if (addNoDeps) {
                     // Add -nodeps dependency for android_library/java_library_static

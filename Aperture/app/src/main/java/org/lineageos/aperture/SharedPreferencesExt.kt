@@ -1,33 +1,38 @@
 /*
- * SPDX-FileCopyrightText: 2022 The LineageOS Project
+ * SPDX-FileCopyrightText: 2022-2023 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.aperture
 
-import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.net.Uri
 import androidx.camera.core.AspectRatio
 import androidx.camera.core.ImageCapture
 import androidx.camera.extensions.ExtensionMode
 import androidx.camera.video.Quality
+import androidx.core.content.edit
 import org.lineageos.aperture.utils.CameraFacing
 import org.lineageos.aperture.utils.CameraMode
 import org.lineageos.aperture.utils.FlashMode
+import org.lineageos.aperture.utils.Framerate
 import org.lineageos.aperture.utils.GridMode
+import org.lineageos.aperture.utils.TimerMode
 
-@SuppressLint("ApplySharedPref")
-inline fun SharedPreferences.edit(
-    commit: Boolean = false,
-    action: SharedPreferences.Editor.() -> Unit
-) {
-    val editor = edit()
-    action(editor)
-    if (commit) {
-        editor.commit()
+// Helpers
+internal fun SharedPreferences.getBoolean(key: String): Boolean? {
+    return if (contains(key)) {
+        getBoolean(key, false)
     } else {
-        editor.apply()
+        null
+    }
+}
+
+internal fun SharedPreferences.Editor.putBoolean(key: String, value: Boolean?) {
+    if (value == null) {
+        remove(key)
+    } else {
+        putBoolean(key, value)
     }
 }
 
@@ -111,27 +116,21 @@ internal var SharedPreferences.lastMicMode: Boolean
 // Photos prefs
 private const val PHOTO_CAPTURE_MODE_KEY = "photo_capture_mode"
 private const val PHOTO_CAPTURE_MODE_DEFAULT = "minimize_latency"
+private const val ENABLE_ZSL_KEY = "enable_zsl"
+private const val ENABLE_ZSL_DEFAULT = false
 
-internal var SharedPreferences.photoCaptureMode: Int
+internal val SharedPreferences.photoCaptureMode: Int
     @androidx.camera.core.ExperimentalZeroShutterLag
     get() = when (getString(PHOTO_CAPTURE_MODE_KEY, PHOTO_CAPTURE_MODE_DEFAULT)) {
         "maximize_quality" -> ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
-        "minimize_latency" -> ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
-        "zero_shutter_lag" -> ImageCapture.CAPTURE_MODE_ZERO_SHUTTER_LAG
+        "minimize_latency" ->
+            if (getBoolean(ENABLE_ZSL_KEY, ENABLE_ZSL_DEFAULT)) {
+                ImageCapture.CAPTURE_MODE_ZERO_SHUTTER_LAG
+            } else {
+                ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
+            }
         // Default to minimize latency
         else -> ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY
-    }
-    @androidx.camera.core.ExperimentalZeroShutterLag
-    set(value) = edit {
-        putString(
-            PHOTO_CAPTURE_MODE_KEY, when (value) {
-                ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY -> "maximize_quality"
-                ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY -> "minimize_latency"
-                ImageCapture.CAPTURE_MODE_ZERO_SHUTTER_LAG -> "zero_shutter_lag"
-                // Default to maximize quality
-                else -> PHOTO_CAPTURE_MODE_DEFAULT
-            }
-        )
     }
 
 private const val PHOTO_FLASH_MODE_KEY = "photo_flash_mode"
@@ -208,6 +207,14 @@ internal var SharedPreferences.photoEffect: Int
     }
 
 // Video prefs
+private const val VIDEO_FRAMERATE_KEY = "video_framerate"
+
+internal var SharedPreferences.videoFramerate: Framerate?
+    get() = Framerate.fromValue(getInt(VIDEO_FRAMERATE_KEY, -1))
+    set(value) = edit {
+        putInt(VIDEO_FRAMERATE_KEY, value?.value ?: -1)
+    }
+
 private const val VIDEO_QUALITY_KEY = "video_quality"
 private const val VIDEO_QUALITY_DEFAULT = "fhd"
 
@@ -237,10 +244,10 @@ internal var SharedPreferences.videoQuality: Quality
 private const val TIMER_MODE_KEY = "timer_mode"
 private const val TIMER_MODE_DEFAULT = 0
 
-internal var SharedPreferences.timerMode: Int
-    get() = getInt(TIMER_MODE_KEY, TIMER_MODE_DEFAULT)
+internal var SharedPreferences.timerMode: TimerMode
+    get() = TimerMode.fromSeconds(getInt(TIMER_MODE_KEY, TIMER_MODE_DEFAULT)) ?: TimerMode.OFF
     set(value) = edit {
-        putInt(TIMER_MODE_KEY, value)
+        putInt(TIMER_MODE_KEY, value.seconds)
     }
 
 // Aspect ratio
@@ -276,9 +283,8 @@ internal var SharedPreferences.brightScreen: Boolean
 
 // Save location
 private const val SAVE_LOCATION = "save_location"
-private const val SAVE_LOCATION_DEFAULT = false
-internal var SharedPreferences.saveLocation: Boolean
-    get() = getBoolean(SAVE_LOCATION, SAVE_LOCATION_DEFAULT)
+internal var SharedPreferences.saveLocation: Boolean?
+    get() = getBoolean(SAVE_LOCATION)
     set(value) = edit {
         putBoolean(SAVE_LOCATION, value)
     }
@@ -314,3 +320,9 @@ internal var SharedPreferences.lastSavedUri: Uri?
     set(value) = edit {
         putString(LAST_SAVED_URI_KEY, value.toString())
     }
+
+// Video stabilization
+private const val VIDEO_STABILIZATION_KEY = "video_stabilization"
+private const val VIDEO_STABILIZATION_DEFAULT = true
+internal val SharedPreferences.videoStabilization: Boolean
+    get() = getBoolean(VIDEO_STABILIZATION_KEY, VIDEO_STABILIZATION_DEFAULT)

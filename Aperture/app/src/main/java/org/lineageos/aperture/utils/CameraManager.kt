@@ -1,44 +1,106 @@
 /*
- * SPDX-FileCopyrightText: 2022 The LineageOS Project
+ * SPDX-FileCopyrightText: 2022-2023 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.aperture.utils
 
-import android.hardware.camera2.CameraManager
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Context
 import androidx.camera.extensions.ExtensionsManager
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.camera.video.Quality
 import androidx.camera.view.LifecycleCameraController
 import org.lineageos.aperture.R
 import org.lineageos.aperture.getBoolean
 import org.lineageos.aperture.getStringArray
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import android.hardware.camera2.CameraManager as Camera2CameraManager
 
 /**
  * Class managing an app camera session
  */
 @androidx.camera.camera2.interop.ExperimentalCamera2Interop
-class CameraManager(activity: AppCompatActivity) {
-    val camera2CameraManager: CameraManager = activity.getSystemService(CameraManager::class.java)
-    private val cameraProvider: ProcessCameraProvider = ProcessCameraProvider.getInstance(
-        activity
-    ).get()
-    val extensionsManager: ExtensionsManager = ExtensionsManager.getInstanceAsync(
-        activity, cameraProvider
-    ).get()
-    val cameraController = LifecycleCameraController(activity)
+class CameraManager(context: Context) {
+    val camera2CameraManager: Camera2CameraManager =
+        context.getSystemService(Camera2CameraManager::class.java)
+
+    private val cameraProvider = ProcessCameraProvider.getInstance(context).get()
+    val extensionsManager = ExtensionsManager.getInstanceAsync(context, cameraProvider).get()!!
+    val cameraController = LifecycleCameraController(context)
     val cameraExecutor: ExecutorService = Executors.newSingleThreadExecutor()
 
+    private val additionalVideoConfigurations by lazy {
+        mutableMapOf<String, MutableMap<Quality, MutableList<Framerate>>>().apply {
+            context.resources.getStringArray(context, R.array.config_additionalVideoConfigurations)
+                .let {
+                    if (it.size % 3 != 0) {
+                        // Invalid configuration
+                        return@apply
+                    }
+
+                    for (i in it.indices step 3) {
+                        val cameraId = it[i]
+                        val framerates = it[i + 2].split("|").mapNotNull {
+                            Framerate.fromValue(it.toInt())
+                        }
+
+                        it[i + 1].split("|").mapNotNull {
+                            when (it) {
+                                "sd" -> Quality.SD
+                                "hd" -> Quality.HD
+                                "fhd" -> Quality.FHD
+                                "uhd" -> Quality.UHD
+                                else -> null
+                            }
+                        }.distinct().forEach {
+                            if (!this.containsKey(cameraId)) {
+                                this[cameraId] = mutableMapOf()
+                            }
+                            if (!this[cameraId]!!.containsKey(it)) {
+                                this[cameraId]!![it] = mutableListOf()
+                            }
+                            this[cameraId]!![it]!!.addAll(framerates)
+                        }
+                    }
+                }
+        }.map { a ->
+            a.key to a.value.map { b ->
+                b.key to b.value.toList()
+            }.toMap()
+        }.toMap()
+    }
     private val enableAuxCameras by lazy {
-        activity.resources.getBoolean(activity, R.bool.config_enableAuxCameras)
+        context.resources.getBoolean(context, R.bool.config_enableAuxCameras)
     }
     private val ignoredAuxCameraIds by lazy {
-        activity.resources.getStringArray(activity, R.array.config_ignoredAuxCameraIds)
+        context.resources.getStringArray(context, R.array.config_ignoredAuxCameraIds)
     }
     private val ignoreLogicalAuxCameras by lazy {
-        activity.resources.getBoolean(activity, R.bool.config_ignoreLogicalAuxCameras)
+        context.resources.getBoolean(context, R.bool.config_ignoreLogicalAuxCameras)
+    }
+    private val logicalZoomRatios by lazy {
+        mutableMapOf<String, MutableMap<Float, Float>>().apply {
+            context.resources.getStringArray(context, R.array.config_logicalZoomRatios).let {
+                if (it.size % 3 != 0) {
+                    // Invalid configuration
+                    return@apply
+                }
+
+                for (i in it.indices step 3) {
+                    val cameraId = it[i]
+                    val approximateZoomRatio = it[i + 1].toFloat()
+                    val exactZoomRatio = it[i + 2].toFloat()
+
+                    if (!this.containsKey(cameraId)) {
+                        this[cameraId] = mutableMapOf()
+                    }
+                    this[cameraId]!![approximateZoomRatio] = exactZoomRatio
+                }
+            }
+        }.map { a ->
+            a.key to a.value.toMap()
+        }.toMap()
     }
 
     private val cameras: Map<String, Camera>
@@ -84,6 +146,15 @@ class CameraManager(activity: AppCompatActivity) {
         }
     private val availableCamerasSupportingVideoRecording: List<Camera>
         get() = availableCameras.filter { it.supportsVideoRecording }
+
+    fun getAdditionalVideoFramerates(cameraId: String, quality: Quality) =
+        additionalVideoConfigurations[cameraId]?.get(quality) ?: listOf()
+
+    fun getLogicalZoomRatios(cameraId: String) = mutableMapOf(1.0f to 1.0f).apply {
+        logicalZoomRatios[cameraId]?.let {
+            putAll(it)
+        }
+    }.toSortedMap()
 
     fun getCameras(
         cameraMode: CameraMode, cameraFacing: CameraFacing,
@@ -169,25 +240,10 @@ class CameraManager(activity: AppCompatActivity) {
             return listOf(mainCamera)
         }
 
-        if (mainCamera.isLogical && mainCamera.focalLengths.size >= 2) {
-            // If first camera is logical and it has more focal lengths,
-            // it's very likely that it merges all sensors and handles
-            // them with zoom (e.g. Pixels). Just expose only that
-            return listOf(mainCamera)
-        }
-
         // Get the list of aux cameras
         val auxCameras = facingCameras
             .drop(1)
             .filter { !ignoreLogicalAuxCameras || !it.isLogical }
-        // Setup zoom ratio for aux cameras
-        mainCamera.mm35FocalLengths?.getOrNull(0)?.let { mainCameraMm35FocalLength ->
-            for (camera in auxCameras) {
-                camera.mm35FocalLengths?.getOrNull(0)?.let {
-                    camera.zoomRatio = it / mainCameraMm35FocalLength
-                }
-            }
-        }
 
         return listOf(mainCamera) + auxCameras
     }

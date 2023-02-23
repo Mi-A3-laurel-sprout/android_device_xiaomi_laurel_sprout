@@ -1,5 +1,5 @@
 /*
- * SPDX-FileCopyrightText: 2022 The LineageOS Project
+ * SPDX-FileCopyrightText: 2022-2023 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
@@ -16,83 +16,85 @@ import androidx.appcompat.widget.LinearLayoutCompat
 import androidx.core.view.setMargins
 import org.lineageos.aperture.R
 import org.lineageos.aperture.px
+import org.lineageos.aperture.smoothRotate
 import org.lineageos.aperture.utils.Camera
+import org.lineageos.aperture.utils.Rotation
 import java.util.Locale
 
 @androidx.camera.camera2.interop.ExperimentalCamera2Interop
-class LensSelectorLayout(context: Context, attrs: AttributeSet?) : LinearLayoutCompat(
-    context, attrs
-) {
-    private val layoutInflater by lazy { LayoutInflater.from(context) }
+class LensSelectorLayout @JvmOverloads constructor(
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+) : LinearLayoutCompat(context, attrs, defStyleAttr) {
+    private val layoutInflater by lazy { context.getSystemService(LayoutInflater::class.java) }
 
     private lateinit var activeCamera: Camera
 
-    private val buttonToZoomRatio = mutableMapOf<Button, Float>()
+    private var usesLogicalZoomRatio = false
+    private var currentZoomRatio = 1.0f
+
+    private val buttonToApproximateZoomRatio = mutableMapOf<Button, Float>()
 
     private val buttonToCamera = mutableMapOf<Button, Camera>()
-    private val buttonToFocalLength = mutableMapOf<Button, Float>()
-
-    private var usesFocalLength = false
-    private var currentFocalLength = 0f
+    private val buttonToZoomRatio = mutableMapOf<Button, Float>()
 
     var onCameraChangeCallback: (camera: Camera) -> Unit = {}
-    var onFocalLengthChangeCallback: (focalLength: Float) -> Unit = {}
+    var onZoomRatioChangeCallback: (zoomRatio: Float) -> Unit = {}
+
+    internal var screenRotation = Rotation.ROTATION_0
+        set(value) {
+            field = value
+            updateViewsRotation()
+        }
 
     fun setCamera(activeCamera: Camera, availableCameras: Collection<Camera>) {
         this.activeCamera = activeCamera
 
         removeAllViews()
-        buttonToZoomRatio.clear()
+        buttonToApproximateZoomRatio.clear()
 
         buttonToCamera.clear()
-        buttonToFocalLength.clear()
+        buttonToZoomRatio.clear()
 
-        usesFocalLength = activeCamera.isLogical && availableCameras.size == 1
+        usesLogicalZoomRatio = activeCamera.logicalZoomRatios.size > 1
 
-        if (usesFocalLength) {
-            val mainMm35FocalLength = activeCamera.mm35FocalLengths!![0]
-            val sensorSize = activeCamera.sensorSize!!
-            val zoomRatioToFocalLength = activeCamera.focalLengths.associateBy {
-                Camera.getMm35FocalLength(it, sensorSize) / mainMm35FocalLength
-            }
-            for ((zoomRatio, focalLength) in zoomRatioToFocalLength.toSortedMap()) {
+        if (usesLogicalZoomRatio) {
+            for ((approximateZoomRatio, exactZoomRatio) in activeCamera.logicalZoomRatios) {
                 val button = inflateButton().apply {
                     setOnClickListener {
-                        buttonToFocalLength[it]?.let { focalLength ->
-                            onFocalLengthChangeCallback(focalLength)
-                            currentFocalLength = focalLength
-                            updateButtonsAttributes()
-                        }
+                        buttonToZoomRatio[it]?.let(onZoomRatioChangeCallback)
                     }
-                    text = formatZoomRatio(zoomRatio)
+                    text = formatZoomRatio(approximateZoomRatio)
                 }
 
                 addView(button)
-                buttonToFocalLength[button] = focalLength
-                buttonToZoomRatio[button] = zoomRatio
+                buttonToZoomRatio[button] = exactZoomRatio
+                buttonToApproximateZoomRatio[button] = approximateZoomRatio
             }
-            currentFocalLength = activeCamera.focalLengths.first()
         } else {
-            for (camera in availableCameras.sortedBy { it.zoomRatio }) {
+            for (camera in availableCameras.sortedBy { it.intrinsicZoomRatio }) {
                 val button = inflateButton().apply {
                     setOnClickListener {
                         buttonToCamera[it]?.let(onCameraChangeCallback)
                     }
-                    text = formatZoomRatio(camera.zoomRatio)
+                    text = formatZoomRatio(camera.intrinsicZoomRatio)
                 }
 
                 addView(button)
                 buttonToCamera[button] = camera
-                buttonToZoomRatio[button] = camera.zoomRatio
+                buttonToApproximateZoomRatio[button] = camera.intrinsicZoomRatio
             }
         }
 
         updateButtonsAttributes()
     }
 
-    @SuppressLint("InflateParams")
+    fun onZoomRatioChanged(zoomRatio: Float) {
+        currentZoomRatio = zoomRatio
+        updateButtonsAttributes()
+    }
+
     private fun inflateButton(): Button {
-        val button = layoutInflater.inflate(R.layout.lens_selector_button, null) as Button
+        val button = layoutInflater.inflate(R.layout.lens_selector_button, this, false) as Button
         return button.apply {
             layoutParams = LayoutParams(32.px, 32.px).apply {
                 setMargins(5)
@@ -101,9 +103,26 @@ class LensSelectorLayout(context: Context, attrs: AttributeSet?) : LinearLayoutC
     }
 
     private fun updateButtonsAttributes() {
-        if (usesFocalLength) {
-            for ((button, focalLength) in buttonToFocalLength) {
-                updateButtonAttributes(button, focalLength == currentFocalLength)
+        if (usesLogicalZoomRatio) {
+            buttonToZoomRatio.asSequence().let {
+                val firstButton = it.first().key
+                val lastButton = it.last().key
+
+                var activeButton: Button? = null
+                for ((button, exactZoomRatio) in it) {
+                    if (currentZoomRatio >= exactZoomRatio) {
+                        activeButton = button
+                    } else if (activeButton != null) {
+                        break
+                    } else if (button == firstButton || button == lastButton) {
+                        activeButton = button
+                        break
+                    }
+                }
+
+                for ((button, _) in it) {
+                    updateButtonAttributes(button, button == activeButton)
+                }
             }
         } else {
             for ((button, camera) in buttonToCamera) {
@@ -115,11 +134,20 @@ class LensSelectorLayout(context: Context, attrs: AttributeSet?) : LinearLayoutC
     @SuppressLint("SetTextI18n")
     private fun updateButtonAttributes(button: Button, currentCamera: Boolean) {
         button.isEnabled = !currentCamera
-        val formattedZoomRatio = formatZoomRatio(buttonToZoomRatio[button]!!)
+        val formattedZoomRatio = formatZoomRatio(buttonToApproximateZoomRatio[button]!!)
         button.text = if (currentCamera) {
             "${formattedZoomRatio}×"
         } else {
             formattedZoomRatio
+        }
+        button.rotation = screenRotation.compensationValue.toFloat()
+    }
+
+    private fun updateViewsRotation() {
+        val rotation = screenRotation.compensationValue.toFloat()
+
+        for (button in buttonToApproximateZoomRatio.keys) {
+            button.smoothRotate(rotation)
         }
     }
 

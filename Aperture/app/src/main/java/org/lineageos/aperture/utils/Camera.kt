@@ -1,82 +1,120 @@
 /*
- * SPDX-FileCopyrightText: 2022 The LineageOS Project
+ * SPDX-FileCopyrightText: 2022-2023 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.aperture.utils
 
 import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraMetadata
+import android.os.Build
+import android.util.Size
 import android.util.SizeF
 import androidx.camera.camera2.interop.Camera2CameraInfo
 import androidx.camera.core.CameraInfo
+import androidx.camera.core.CameraSelector
+import androidx.camera.video.Quality
 import androidx.camera.video.QualitySelector
 import org.lineageos.aperture.getSupportedModes
 import org.lineageos.aperture.physicalCameraIds
+import org.lineageos.aperture.toSize
 import kotlin.reflect.safeCast
-import kotlin.runCatching
 
 /**
  * Class representing a device camera
  */
 @androidx.camera.camera2.interop.ExperimentalCamera2Interop
+@androidx.camera.core.ExperimentalLensFacing
+@androidx.camera.core.ExperimentalZeroShutterLag
 class Camera(cameraInfo: CameraInfo, cameraManager: CameraManager) {
     val cameraSelector = cameraInfo.cameraSelector
 
     val camera2CameraInfo = Camera2CameraInfo.from(cameraInfo)
     val cameraId = camera2CameraInfo.cameraId
 
-    val cameraFacing =
-        when (camera2CameraInfo.getCameraCharacteristic(CameraCharacteristics.LENS_FACING)) {
-            CameraCharacteristics.LENS_FACING_FRONT -> CameraFacing.FRONT
-            CameraCharacteristics.LENS_FACING_BACK -> CameraFacing.BACK
-            CameraCharacteristics.LENS_FACING_EXTERNAL -> CameraFacing.EXTERNAL
-            else -> CameraFacing.UNKNOWN
-        }
+    val cameraFacing = when (cameraInfo.lensFacing) {
+        CameraSelector.LENS_FACING_FRONT -> CameraFacing.FRONT
+        CameraSelector.LENS_FACING_BACK -> CameraFacing.BACK
+        CameraSelector.LENS_FACING_EXTERNAL -> CameraFacing.EXTERNAL
+        CameraSelector.LENS_FACING_UNKNOWN -> CameraFacing.UNKNOWN
+        else -> throw Exception("Unknown lens facing value")
+    }
 
     val exposureCompensationRange = cameraInfo.exposureState.exposureCompensationRange
     val hasFlashUnit = cameraInfo.hasFlashUnit()
 
-    val physicalCameraIds = camera2CameraInfo.physicalCameraIds
-    val isLogical = physicalCameraIds.isNotEmpty()
+    /**
+     * A list of sensors this camera is made of.
+     * If it contains a single sensor, this means this is a physical camera device,
+     * else it's a logical camera device.
+     * This list may be empty if information parsing failed (this can happen with
+     * external cameras).
+     */
+    val sensors = mutableListOf<Sensor>().apply {
+        val physicalCameraIds = camera2CameraInfo.physicalCameraIds
 
-    val focalLengths = mutableSetOf<Float>().apply {
-        addAll(camera2CameraInfo.getCameraCharacteristic(
-            CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS
-        )?.toSet() ?: setOf())
-
-        for (physicalCameraId in physicalCameraIds) {
-            runCatching {
-                val camera2CameraCharacteristics =
-                    cameraManager.camera2CameraManager.getCameraCharacteristics(physicalCameraId)
-                val physicalFocalLengths = camera2CameraCharacteristics.get(
-                    CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS
-                ) ?: FloatArray(0)
-                for (focalLength in physicalFocalLengths) {
-                    add(focalLength)
+        if (physicalCameraIds.isNotEmpty()) {
+            for (physicalCameraId in physicalCameraIds) {
+                runCatching {
+                    val camera2CameraCharacteristics =
+                        cameraManager.camera2CameraManager.getCameraCharacteristics(
+                            physicalCameraId
+                        )
+                    this@apply.add(Camera2Sensor(camera2CameraCharacteristics))
                 }
             }
+        } else {
+            runCatching { CameraXSensor(camera2CameraInfo) }.getOrNull()?.let {
+                add(it)
+            }
         }
-    }.toSet()
-    val sensorSize = camera2CameraInfo.getCameraCharacteristic(
-        CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE
-    )
+    }.toList()
 
-    val mm35FocalLengths = sensorSize?.let { sensorSize ->
-        focalLengths.map { getMm35FocalLength(it, sensorSize) }
-    }
-    var zoomRatio = 1f
+    val isLogical = sensors.size > 1
 
-    val supportedVideoQualities = QualitySelector.getSupportedQualities(cameraInfo).reversed()
-    val supportedVideoFramerates: List<Framerate> = mutableListOf(Framerate.FPS_AUTO).apply {
+    val intrinsicZoomRatio = cameraInfo.intrinsicZoomRatio
+    val logicalZoomRatios = cameraManager.getLogicalZoomRatios(cameraId)
+
+    private val supportedVideoFramerates =
         camera2CameraInfo.getCameraCharacteristic(
             CameraCharacteristics.CONTROL_AE_AVAILABLE_TARGET_FPS_RANGES
-        )?.let {
-            addAll(it.mapNotNull { range -> Framerate.fromRange(range) }.distinct().sorted())
+        )?.mapNotNull { range ->
+            Framerate.fromRange(range)
+        }?.distinct()?.sorted() ?: listOf()
+    val supportedVideoQualities = QualitySelector.getSupportedQualities(cameraInfo).associateWith {
+        supportedVideoFramerates + cameraManager.getAdditionalVideoFramerates(cameraId, it)
+    }.toSortedMap { a, b ->
+        listOf(Quality.SD, Quality.HD, Quality.FHD, Quality.UHD).let {
+            it.indexOf(a) - it.indexOf(b)
         }
     }
     val supportsVideoRecording = supportedVideoQualities.isNotEmpty()
 
     val supportedExtensionModes = cameraManager.extensionsManager.getSupportedModes(cameraSelector)
+
+    val supportedVideoStabilizationModes = mutableListOf(VideoStabilizationMode.OFF).apply {
+        val availableVideoStabilizationModes = camera2CameraInfo.getCameraCharacteristic(
+            CameraCharacteristics.CONTROL_AVAILABLE_VIDEO_STABILIZATION_MODES
+        ) ?: IntArray(0)
+
+        if (
+            availableVideoStabilizationModes.contains(
+                CameraMetadata.CONTROL_VIDEO_STABILIZATION_MODE_ON
+            )
+        ) {
+            add(VideoStabilizationMode.ON)
+        }
+        if (
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            availableVideoStabilizationModes.contains(
+                CameraMetadata.CONTROL_VIDEO_STABILIZATION_MODE_PREVIEW_STABILIZATION
+            )
+        ) {
+            add(VideoStabilizationMode.ON_PREVIEW)
+        }
+    }.toList()
+
+    val supportsZsl = cameraInfo.isZslSupported
 
     override fun equals(other: Any?): Boolean {
         val camera = this::class.safeCast(other) ?: return false
@@ -98,9 +136,49 @@ class Camera(cameraInfo: CameraInfo, cameraManager: CameraManager) {
         }
     }
 
-    companion object {
-        fun getMm35FocalLength(focalLength: Float, sensorSize: SizeF): Float {
-            return (36.0f / sensorSize.width) * focalLength
-        }
+    private class Camera2Sensor(private val cameraCharacteristics: CameraCharacteristics) : Sensor {
+        override val activeArraySize: Size
+            get() = cameraCharacteristics.get(
+                CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE
+            )!!.toSize()
+        override val availableFocalLengths: List<Float>
+            get() = cameraCharacteristics.get(
+                CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS
+            )!!.toList()
+        override val orientation: Int
+            get() = cameraCharacteristics.get(
+                CameraCharacteristics.SENSOR_ORIENTATION
+            )!!
+        override val pixelArraySize: Size
+            get() = cameraCharacteristics.get(
+                CameraCharacteristics.SENSOR_INFO_PIXEL_ARRAY_SIZE
+            )!!
+        override val size: SizeF
+            get() = cameraCharacteristics.get(
+                CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE
+            )!!
+    }
+
+    private class CameraXSensor(private val camera2CameraInfo: Camera2CameraInfo) : Sensor {
+        override val activeArraySize: Size
+            get() = camera2CameraInfo.getCameraCharacteristic(
+                CameraCharacteristics.SENSOR_INFO_ACTIVE_ARRAY_SIZE
+            )!!.toSize()
+        override val availableFocalLengths: List<Float>
+            get() = camera2CameraInfo.getCameraCharacteristic(
+                CameraCharacteristics.LENS_INFO_AVAILABLE_FOCAL_LENGTHS
+            )!!.toList()
+        override val orientation: Int
+            get() = camera2CameraInfo.getCameraCharacteristic(
+                CameraCharacteristics.SENSOR_ORIENTATION
+            )!!
+        override val pixelArraySize: Size
+            get() = camera2CameraInfo.getCameraCharacteristic(
+                CameraCharacteristics.SENSOR_INFO_PIXEL_ARRAY_SIZE
+            )!!
+        override val size: SizeF
+            get() = camera2CameraInfo.getCameraCharacteristic(
+                CameraCharacteristics.SENSOR_INFO_PHYSICAL_SIZE
+            )!!
     }
 }

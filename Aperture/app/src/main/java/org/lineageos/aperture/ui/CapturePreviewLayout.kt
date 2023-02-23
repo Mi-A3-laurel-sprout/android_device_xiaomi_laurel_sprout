@@ -1,69 +1,143 @@
 /*
- * SPDX-FileCopyrightText: 2022 The LineageOS Project
+ * SPDX-FileCopyrightText: 2022-2023 The LineageOS Project
  * SPDX-License-Identifier: Apache-2.0
  */
 
 package org.lineageos.aperture.ui
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.AttributeSet
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.VideoView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.media3.common.MediaItem
+import androidx.media3.exoplayer.ExoPlayer
+import androidx.media3.ui.PlayerView
 import org.lineageos.aperture.R
+import org.lineageos.aperture.smoothRotate
+import org.lineageos.aperture.utils.ExifUtils
 import org.lineageos.aperture.utils.MediaType
+import org.lineageos.aperture.utils.Rotation
+import java.io.InputStream
 
 /**
  * Image/video preview fragment
  */
+@androidx.media3.common.util.UnstableApi
 class CapturePreviewLayout(context: Context, attrs: AttributeSet?) : ConstraintLayout(
     context, attrs
 ) {
-    private lateinit var uri: Uri
+    private var uri: Uri? = null
+    private var photoInputStream: InputStream? = null
     private lateinit var mediaType: MediaType
+
+    private var exoPlayer: ExoPlayer? = null
 
     private val cancelButton by lazy { findViewById<ImageButton>(R.id.cancelButton) }
     private val confirmButton by lazy { findViewById<ImageButton>(R.id.confirmButton) }
     private val imageView by lazy { findViewById<ImageView>(R.id.imageView) }
-    private val videoView by lazy { findViewById<VideoView>(R.id.videoView) }
+    private val videoView by lazy { findViewById<PlayerView>(R.id.videoView) }
 
     /**
-     * URI is null == canceled
-     * URI is not null == confirmed
+     * input is null == canceled
+     * input is not null == confirmed
      */
-    internal var onChoiceCallback: (uri: Uri?) -> Unit = {}
+    internal var onChoiceCallback: (input: Any?) -> Unit = {}
+
+    internal var screenRotation = Rotation.ROTATION_0
+        set(value) {
+            field = value
+            updateViewsRotation()
+        }
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         super.onLayout(changed, left, top, right, bottom)
 
         cancelButton.setOnClickListener {
+            stopPreview()
             onChoiceCallback(null)
         }
         confirmButton.setOnClickListener {
-            onChoiceCallback(uri)
+            stopPreview()
+            onChoiceCallback(uri ?: photoInputStream)
         }
     }
 
-    internal fun updateUri(uri: Uri, mediaType: MediaType) {
+    internal fun updateSource(uri: Uri, mediaType: MediaType) {
         this.uri = uri
+        this.photoInputStream = null
         this.mediaType = mediaType
-
-        videoView.stopPlayback()
 
         imageView.isVisible = mediaType == MediaType.PHOTO
         videoView.isVisible = mediaType == MediaType.VIDEO
 
+        startPreview()
+    }
+
+    internal fun updateSource(photoInputStream: InputStream) {
+        this.uri = null
+        this.photoInputStream = photoInputStream
+        this.mediaType = MediaType.PHOTO
+
+        imageView.isVisible = true
+        videoView.isVisible = false
+
+        startPreview()
+    }
+
+    private fun startPreview() {
+        assert((uri == null) != (photoInputStream == null)) {
+            "Expected uri or photoInputStream, not both."
+        }
         when (mediaType) {
             MediaType.PHOTO -> {
-                imageView.setImageURI(uri)
+                if (uri != null) {
+                    imageView.rotation = 0f
+                    imageView.setImageURI(uri)
+                } else {
+                    val inputStream = photoInputStream!!
+                    val transform = ExifUtils.getTransform(inputStream)
+                    inputStream.mark(Int.MAX_VALUE)
+                    val bitmap = BitmapFactory.decodeStream(inputStream)
+                    inputStream.reset()
+                    imageView.rotation =
+                        transform.rotation.offset.toFloat() - screenRotation.offset
+                    imageView.setImageBitmap(bitmap)
+                }
             }
             MediaType.VIDEO -> {
-                videoView.setVideoURI(uri)
-                videoView.start()
+                exoPlayer = ExoPlayer.Builder(context)
+                    .build()
+                    .also {
+                        videoView.player = it
+
+                        it.setMediaItem(MediaItem.fromUri(uri!!))
+
+                        it.playWhenReady = true
+                        it.seekTo(0)
+                        it.prepare()
+                    }
             }
         }
+    }
+
+    private fun stopPreview() {
+        when (mediaType) {
+            MediaType.PHOTO -> {}
+            MediaType.VIDEO -> {
+                exoPlayer?.release()
+                exoPlayer = null
+            }
+        }
+    }
+
+    private fun updateViewsRotation() {
+        val compensationValue = screenRotation.compensationValue.toFloat()
+
+        cancelButton.smoothRotate(compensationValue)
+        confirmButton.smoothRotate(compensationValue)
     }
 }
