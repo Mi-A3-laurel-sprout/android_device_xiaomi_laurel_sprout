@@ -22,6 +22,10 @@ vendor/etc/acdbdata/QRD/QRD_Speaker_cal.acdb
 vendor/etc/acdbdata/QRD/QRD_workspaceFile.qwsp
 vendor/etc/acdbdata/adsp_avs_config.acdb
 
+# Audio - Sound Trigger
+vendor/lib/hw/sound_trigger.primary.trinket.so
+vendor/lib64/hw/sound_trigger.primary.trinket.so
+
 # ADSP modules (misound)
 vendor/lib/rfsa/adsp/misound_res.bin
 
