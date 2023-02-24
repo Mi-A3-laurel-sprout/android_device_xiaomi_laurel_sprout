@@ -129,10 +129,18 @@ PRODUCT_PACKAGES += \
     audio.r_submix.default \
     audio.usb.default \
     libaudio-resampler \
+    libaudioroute \
+    libbatterylistener \
+    libcomprcapture \
+    libexthwplugin \
     libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
-    libvolumelistener
+    libspkrprot \
+    libtinycompress \
+    libtinycompress.vendor \
+    libvolumelistener \
+    tinymix
 
 PRODUCT_PACKAGES += \
     android.hardware.bluetooth.audio@2.1-impl \
