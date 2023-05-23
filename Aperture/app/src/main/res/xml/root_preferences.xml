@@ -59,6 +59,13 @@
             app:summary="@string/enable_zsl_summary"
             app:title="@string/enable_zsl_title" />
 
+        <SwitchPreference
+            app:defaultValue="true"
+            app:iconSpaceReserved="false"
+            app:key="photo_ffc_mirror"
+            app:summary="@string/photo_ffc_mirror_summary"
+            app:title="@string/photo_ffc_mirror_title" />
+
     </PreferenceCategory>
 
     <PreferenceCategory

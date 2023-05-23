@@ -17,7 +17,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 import org.lineageos.aperture.R
-import org.lineageos.aperture.smoothRotate
+import org.lineageos.aperture.ext.*
 import org.lineageos.aperture.utils.ExifUtils
 import org.lineageos.aperture.utils.MediaType
 import org.lineageos.aperture.utils.Rotation
@@ -26,7 +26,6 @@ import java.io.InputStream
 /**
  * Image/video preview fragment
  */
-@androidx.media3.common.util.UnstableApi
 class CapturePreviewLayout(context: Context, attrs: AttributeSet?) : ConstraintLayout(
     context, attrs
 ) {

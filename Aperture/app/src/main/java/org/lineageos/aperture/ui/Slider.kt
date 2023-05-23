@@ -18,7 +18,7 @@ import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import org.lineageos.aperture.R
-import org.lineageos.aperture.px
+import org.lineageos.aperture.ext.*
 import org.lineageos.aperture.utils.Rotation
 
 abstract class Slider @JvmOverloads constructor(
@@ -28,6 +28,12 @@ abstract class Slider @JvmOverloads constructor(
         style = Paint.Style.FILL
         xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
         setShadowLayer(1f, 0f, 0f, Color.BLACK)
+    }
+
+    private val trackBorderPaint = Paint().apply {
+        style = Paint.Style.STROKE
+        xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
+        strokeWidth = 2F
     }
 
     private val thumbPaint = Paint().apply {
@@ -79,6 +85,9 @@ abstract class Slider @JvmOverloads constructor(
                     trackPaint.color = getColor(R.styleable.Slider_trackColor, Color.WHITE)
                 }
                 thumbPaint.color = getColor(R.styleable.Slider_thumbColor, Color.BLACK)
+                trackBorderPaint.color = getColor(
+                    R.styleable.Slider_trackBorderColor, Color.TRANSPARENT
+                )
                 thumbTextPaint.color = getColor(R.styleable.Slider_thumbTextColor, Color.WHITE)
                 thumbTextPaint.textSize =
                     getDimension(R.styleable.Slider_thumbTextSize, 10.px.toFloat())
@@ -117,6 +126,9 @@ abstract class Slider @JvmOverloads constructor(
 
         // Draw round rect
         canvas.drawRoundRect(track, trackRadius, trackRadius, trackPaint)
+
+        // Draw border
+        canvas.drawRoundRect(track, trackRadius, trackRadius, trackBorderPaint)
     }
 
     abstract fun thumb(): Triple<Float, Float, Float>

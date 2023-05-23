@@ -5,6 +5,7 @@
 -->
 <resources>
     <declare-styleable name="Slider">
+        <attr name="trackBorderColor" format="color" />
         <attr name="trackColor" format="color" />
         <attr name="trackColorGradient" format="boolean" />
         <attr name="trackColorGradientStart" format="color" />
