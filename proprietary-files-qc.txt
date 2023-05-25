@@ -894,69 +894,12 @@ vendor/lib64/unnhal-acc-hvx.so|00eb79608cb6e3f19eaf9389632fdbfa03b2df62
 vendor/bin/ipacm-diag|dabb25c27b4687c8adc77f6b6cb98f0053aca970
 vendor/etc/init/ipacm-diag.rc|e3cee56d2e3ca6bf9aafb827827ebea369fc2897
 
-# PASR HAL - LA.UM.9.11.r1-04500-NICOBAR.0
-vendor/bin/hw/vendor.qti.power.pasrmanager@1.0-service|27dd1f54cfdc65f365c6b63e9b13bdb6ade5aa70
-vendor/etc/init/vendor.qti.power.pasrmanager@1.0-service.rc|b34c1b9179c89cd47adce145bae9a609e5141bc0
-vendor/lib/vendor.qti.memory.pasrmanager@1.0.so|3cf7252c5d8e7525344ef44d740d5f241d0f1da5
-vendor/lib/vendor.qti.power.pasrmanager@1.0.so|23991140d874c6d498e8f0f8b37c0b8ec8e5e1d5
-vendor/lib64/hw/vendor.qti.power.pasrmanager@1.0-impl.so|4e83bd83fa439f15dc3c0a2256eadd81d6c45386
-vendor/lib64/vendor.qti.memory.pasrmanager@1.0.so|c058fe11f441d9f7843b6d72174549d7b02919d6
-vendor/lib64/vendor.qti.power.pasrmanager@1.0.so|856995253f2940eb7c7bf9c57d44b8a86a1c19d0
--vendor/app/pasrservice/pasrservice.apk|03cb6a835f60a388632a992b1e96e9d0cc5f9050
-
 # PD - LA.UM.9.11.r1-04500-NICOBAR.0
 vendor/bin/pd-mapper|3ef75bfcf8d64a8a3d4dcfae483dc1041f35236b
 vendor/lib/libpdmapper.so|a81feb95f7ef79c2b19e0d8335e2e336510de0ef
 vendor/lib/libpdnotifier.so|4a1aa5afdf088b6472b79d6f05a3dc3809fa433c
 vendor/lib64/libpdmapper.so|279bea6f7f25f6bae3c3ef383f8fcd5282833c16
 vendor/lib64/libpdnotifier.so|8e0db92e027f9a19786f38ac89e95de0dff08813
-
-# Performance - LA.UM.9.11.r1-04500-NICOBAR.0
-vendor/bin/hw/vendor.qti.hardware.iop@2.0-service|e5d53eeec5161df23fb0fb6a3994d430efedb1b8
-vendor/bin/hw/vendor.qti.hardware.perf@2.2-service|ff1c824ac4979609cc83784c0508960a8cc53399
-vendor/bin/msm_irqbalance|f16cd993154581baaf60d4a1f2d9f8b0a5ee1f82
-vendor/etc/init/vendor.qti.hardware.iop@2.0-service.rc|fd11367b2585702190ef2577ce2ce6fc68f3a2f8
-vendor/etc/init/vendor.qti.hardware.perf@2.2-service.rc|459b4c23550a56ac545f78c6d391f3d7dd9ba45b
-vendor/etc/lm/AdaptLaunchFeature.xml|ad4516342729e79a8914762c2737f7faa08b1e9d
-vendor/etc/lm/AppClassifierFeature.xml|487853eb2d328d46db61a31e0e2790957b5f7dd8
-vendor/etc/lm/GameOptimizationFeature.xml|fd1e0dcf30bcc65d9705ba0caf1afe97680e83a7
-vendor/etc/perf/commonresourceconfigs.xml|1e5fd2e4612b61371cda4114c9091430f6d5fb1c
-vendor/etc/perf/perfboostsconfig.xml|3b5329a467bb4899d872720eba07a8bf53f9a582
-vendor/etc/perf/perfconfigstore.xml|432034cfd7ab710f13554d97cc2f4f3d4f84f845
-vendor/etc/perf/targetconfig.xml|c5d0434e8e80a11c59dd841c12be2b61b7f98ed3
-vendor/etc/perf/targetresourceconfigs.xml|263f4b2e92eb66f38c1aed0add6a0062b1f33511
-vendor/lib/libperfconfig.so|fc2489868739dd51a10e9ffca5bb370a04e31b1f
-vendor/lib/libperfgluelayer.so|f225dac2afe44ab35c6a38e6ddd851cd40a7bfdd
-vendor/lib/libperfioctl.so|00164c19fa1dbf534f15b0a8bc2fc8d3a11ee2fb
-vendor/lib/libqti-iopd-client.so|a1c3c0623bf43af7448a988a9c4d9ceea85e27dc
-vendor/lib/libqti-iopd.so|523f3b9cbcc086e55deffcb860e0482bf68bcea3
-vendor/lib/libqti-perfd-client.so|cb6d26ce67fb9cb587e8d3390b046fa97de68558
-vendor/lib/libqti-perfd.so|96a9c8b2f430a5e0a3ed14d65b1f8b947d3706fe
-vendor/lib/libqti-util.so|56360d149e58ce204d5eb7e214911e5c07454291
-vendor/lib/libqti-utils.so|3016ae3374b4de3240190d9f885c42cc3ce4d11d
-vendor/lib/libskewknob.so|386941282acc9d1b29d1ea84f835913c7cf4fae2
-vendor/lib/vendor.qti.hardware.iop@1.0.so|3e72632e5b67555b6b1b07816ee73b4d19873049
-vendor/lib/vendor.qti.hardware.iop@2.0.so|71a72d48d921ba0130f256cffda754c55106c93b
-vendor/lib64/libadaptlaunch.so|c1ef41d5103592afc839f373adb0126ce62f71cf
-vendor/lib64/libappclassifier.so|6ba7265b8b16c9df6a456a1595840561fc0bf6e1
-vendor/lib64/libgameoptfeature.so|db634984e8b89c4d81a1757f1c2a4798f17933ef
-vendor/lib64/liblearningmodule.so|57c45ccf092e97edc79a23e3341bebf35631e193
-vendor/lib64/liblmutils-ns.so|8df3b2aa065a6d917367e71656d7ce0992856dd2
-vendor/lib64/libmeters-ns.so|50b4dd703a3fe0f7d3eeb36ac266b774fd7654bc
-vendor/lib64/libmeters.so|3d447155b334d283a57dd15730d994d1f09a0ed5
-vendor/lib64/libperfconfig.so|c19e6af166a54b7c632c0d5ea78bfbb158790491
-vendor/lib64/libperfgluelayer.so|84dfe99cadbf297a8f30f1728c3061ec998b10d7
-vendor/lib64/libperfioctl.so|f549443c16df6df58357c35566ec33ec4e1d394f
-vendor/lib64/libqti-iopd-client.so|9e7561634158cd01b037e740e51cb22cd1119e04
-vendor/lib64/libqti-iopd.so|671337228f5c1479f482f51056fb8ea9d6b243b7
-vendor/lib64/libqti-perfd-client.so|f1cb0e1259bc9edc3dfd6f5ff5284ab6e36aca03
-vendor/lib64/libqti-perfd.so|45bd086f4e711fa50a7793d70e1b9db215a15f2b
-vendor/lib64/libqti-util.so|f2f9b35c1efd8558c38669b3a4931cd52416a5b8
-vendor/lib64/libqti-utils.so|1c9a0cb92802ba2314dafbe0152a7568323fff06
-vendor/lib64/libreffeature.so|4b9ed8d1e5083e9e8f7867e76637143169d70f82
-vendor/lib64/libskewknob.so|d790040533d0b6d26073e9d3fc6527233839f0b9
-vendor/lib64/vendor.qti.hardware.iop@1.0.so|dd98ed98c2e256610d29ff87125864f8d7fedbd8
-vendor/lib64/vendor.qti.hardware.iop@2.0.so|cc384159b598d81bd778beaaac9ff95508f08842
 
 # Peripheral Manager - LA.UM.9.11.r1-04500-NICOBAR.0
 vendor/bin/pm-proxy|6cfaaf498d9360af9d7c9e4675a1dc209454fe24
