@@ -160,9 +160,6 @@ ro.hardware.keystore_desede=true
 debug.stagefright.ccodec=1
 debug.stagefright.omx_default_rank=0
 
-# Pasr
-vendor.power.pasr.enabled=true
-
 # Perf
 ro.vendor.extension_library=libqti-perfd-client.so
 
