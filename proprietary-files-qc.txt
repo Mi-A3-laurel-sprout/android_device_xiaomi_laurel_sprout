@@ -901,6 +901,10 @@ vendor/lib/libpdnotifier.so|4a1aa5afdf088b6472b79d6f05a3dc3809fa433c
 vendor/lib64/libpdmapper.so|279bea6f7f25f6bae3c3ef383f8fcd5282833c16
 vendor/lib64/libpdnotifier.so|8e0db92e027f9a19786f38ac89e95de0dff08813
 
+# Performance QTI - LA.QSSI.13.0.r1-05300-qssi.0
+system_ext/lib/libpenguin.so|19855b83c1098ef7afbadf85eee5fa76f385bb9d
+system_ext/lib64/libpenguin.so|049a5759fa199c59eaebb3fbb26f7a3c68bcc077
+
 # Peripheral Manager - LA.UM.9.11.r1-04500-NICOBAR.0
 vendor/bin/pm-proxy|6cfaaf498d9360af9d7c9e4675a1dc209454fe24
 vendor/bin/pm-service|4a50fd16c62ba27643eabb89d79c022d667bd8b2
