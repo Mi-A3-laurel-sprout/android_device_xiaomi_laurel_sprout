@@ -112,6 +112,7 @@ persist.vendor.camera.manufacturer=Xiaomi
 persist.vendor.camera.eis.enable=1
 vendor.camera.not.cts.apk=1
 vendor.camera.not.ctsverify.apk=1
+persist.vendor.camera.perflock.enable=0
 
 # Chipset
 ro.soc.manufacturer=Qualcomm
