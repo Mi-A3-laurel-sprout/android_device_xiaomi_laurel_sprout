@@ -435,11 +435,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     </hal>
     <!-- Fingerprint  -->
     <hal format="hidl">
-        <name>vendor.xiaomi.hardware.fingerprintextension</name>
-        <transport>hwbinder</transport>
-        <fqname>@1.0::IXiaomiFingerprint/default</fqname>
-    </hal>
-    <hal format="hidl">
         <name>vendor.qti.hardware.fingerprintext</name>
         <transport>hwbinder</transport>
         <fqname>@1.0::IWTFingerprint/default</fqname>
