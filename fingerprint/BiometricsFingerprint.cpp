@@ -219,6 +219,9 @@ Return<RequestStatus> BiometricsFingerprint::enroll(const hidl_array<uint8_t, 69
 }
 
 Return<RequestStatus> BiometricsFingerprint::postEnroll() {
+    if (mUdfpsHandler) {
+        mUdfpsHandler->onFingerUp();
+    }
     return ErrorFilter(mDevice->post_enroll(mDevice));
 }
 
@@ -228,7 +231,7 @@ Return<uint64_t> BiometricsFingerprint::getAuthenticatorId() {
 
 Return<RequestStatus> BiometricsFingerprint::cancel() {
     if (mUdfpsHandler) {
-        mUdfpsHandler->cancel();
+        mUdfpsHandler->onFingerUp();
     }
     return ErrorFilter(mDevice->cancel(mDevice));
 }
@@ -399,6 +402,9 @@ void BiometricsFingerprint::notify(const fingerprint_msg_t* msg) {
                              .isOk()) {
                     ALOGE("failed to invoke fingerprint onAuthenticated callback");
                 }
+                if (thisPtr->mUdfpsHandler) {
+                thisPtr->mUdfpsHandler->onFingerUp();
+            }
             } else {
                 // Not a recognized fingerprint
                 if (!thisPtr->mClientCallback
