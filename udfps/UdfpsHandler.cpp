@@ -50,15 +50,22 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
     void onFingerDown(uint32_t /*x*/, uint32_t /*y*/, float /*minor*/, float /*major*/) {
         set(FOD_STATUS_PATH, FOD_STATUS_ON);
         set(FOD_DIM_PATH, FOD_DIM_ON);
-        set(FOD_HBM_PATH, FOD_HBM_ON);
-        mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_FOD);
+        std::thread([this]() {
+            std::this_thread::sleep_for(std::chrono::milliseconds(90));
+            set(FOD_HBM_PATH, FOD_HBM_ON);
+            std::this_thread::sleep_for(std::chrono::milliseconds(40));
+            mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_FOD);
+        }).detach();
     }
 
     void onFingerUp() {
         set(FOD_STATUS_PATH, FOD_STATUS_OFF);
         set(FOD_HBM_PATH, FOD_HBM_OFF);
-        mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
-        set(FOD_DIM_PATH, FOD_DIM_OFF);
+        std::thread([this]() {
+            std::this_thread::sleep_for(std::chrono::microseconds(30));
+            mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
+            set(FOD_DIM_PATH, FOD_DIM_OFF);
+        }).detach();
     }
     
     void onAcquired(int32_t /*result*/, int32_t /*vendorCode*/) {
