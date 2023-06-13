@@ -11,6 +11,8 @@ on boot
     chown system system /sys/devices/platform/soc/soc:qcom,dsi-display/fod_ui
     chmod 0444 /sys/devices/platform/soc/soc:qcom,dsi-display/fod_ui
     chown system system /sys/devices/platform/soc/soc:qcom,dsi-display/fod_hbm
+    chown system system /sys/devices/platform/soc/soc:qcom,dsi-display/dimlayer_hbm
+    chmod 0666 /sys/devices/platform/soc/soc:qcom,dsi-display/dimlayer_hbm
 
     chown system system /sys/devices/platform/soc/soc:fingerprint_goodix/proximity_state
 

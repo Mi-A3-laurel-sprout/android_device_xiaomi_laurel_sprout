@@ -8,6 +8,7 @@ genfscon sysfs /devices/platform/soc/soc:fingerprint_goodix/proximity_state    u
 # FOD
 genfscon sysfs /sys/devices/platform/soc/4a88000.i2c/i2c-1/1-0038/touch/tp_dev/fod_status           u:object_r:sysfs_fingerprint:s0
 genfscon sysfs /sys/devices/platform/soc/soc:qcom,dsi-display/fod_hbm                               u:object_r:sysfs_fingerprint:s0
+genfscon sysfs /sys/devices/platform/soc/soc:qcom,dsi-display/dimlayer_hbm                          u:object_r:sysfs_fingerprint:s0
 
 # Battery
 genfscon sysfs /devices/soc/c176000.i2c/i2c-2/2-001d            u:object_r:sysfs_battery_supply:s0
