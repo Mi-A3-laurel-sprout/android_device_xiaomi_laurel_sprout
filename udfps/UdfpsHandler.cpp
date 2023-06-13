@@ -48,11 +48,17 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
     }
 
     void onFingerDown(uint32_t /*x*/, uint32_t /*y*/, float /*minor*/, float /*major*/) {
-        // nothing
+        set(FOD_STATUS_PATH, FOD_STATUS_ON);
+        set(FOD_DIM_PATH, FOD_DIM_ON);
+        set(FOD_HBM_PATH, FOD_HBM_ON);
+        mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_FOD);
     }
 
     void onFingerUp() {
-        // nothing
+        set(FOD_STATUS_PATH, FOD_STATUS_OFF);
+        set(FOD_HBM_PATH, FOD_HBM_OFF);
+        mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
+        set(FOD_DIM_PATH, FOD_DIM_OFF);
     }
     
     void onAcquired(int32_t /*result*/, int32_t /*vendorCode*/) {
