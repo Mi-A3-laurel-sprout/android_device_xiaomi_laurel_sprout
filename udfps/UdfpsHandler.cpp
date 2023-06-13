@@ -23,6 +23,10 @@
 #define PARAM_NIT_FOD 3
 #define PARAM_NIT_NONE 0
 
+#define FOD_HBM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display/fod_hbm"
+#define FOD_HBM_ON 1
+#define FOD_HBM_OFF 0
+
 static const char* kFodUiPaths[] = {
         "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/fod_ui",
         "/sys/devices/platform/soc/soc:qcom,dsi-display/fod_ui",

@@ -10,6 +10,7 @@ on boot
     chmod 0660 /dev/input/event2
     chown system system /sys/devices/platform/soc/soc:qcom,dsi-display/fod_ui
     chmod 0444 /sys/devices/platform/soc/soc:qcom,dsi-display/fod_ui
+    chown system system /sys/devices/platform/soc/soc:qcom,dsi-display/fod_hbm
 
     chown system system /sys/devices/platform/soc/soc:fingerprint_goodix/proximity_state
 
