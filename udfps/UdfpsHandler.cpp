@@ -13,6 +13,11 @@
 #include <poll.h>
 #include <thread>
 #include <unistd.h>
+#include <android-base/strings.h>
+#include <cutils/properties.h>
+#include <hardware/hardware.h>
+#include <inttypes.h>
+#include <fstream>
 
 #define COMMAND_NIT 10
 #define PARAM_NIT_FOD 1
