@@ -72,15 +72,4 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
     
     <!-- Use framework FOD dimming instead of kernel dimming -->
     <bool name="config_udfpsFrameworkDimming">true</bool>
-    
-    <!-- Brightness range min for udfps dimming -->
-    <integer name="config_udfpsDimmingBrightnessMin">0</integer>
-
-    <!-- Brightness range max for udfps dimming -->
-    <integer name="config_udfpsDimmingBrightnessMax">0</integer>
-
-    <!-- The amount of delay to add when disabling the dimming.
-         This is used to prevent flickers due to the dimming being disabled
-         before the screen has had chance to switch out of HBM mode -->
-     <integer name="config_udfpsDimmingDisableDelay">0</integer>
 </resources>
