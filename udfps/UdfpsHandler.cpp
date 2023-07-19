@@ -75,6 +75,14 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
     void cancel() {
         // nothing
     }
+    
+    void onHideUdfpsOverlay() {
+        // nothing
+    }
+
+    void onShowUdfpsOverlay() {
+        // nothing
+    }
   private:
     fingerprint_device_t *mDevice;
 };

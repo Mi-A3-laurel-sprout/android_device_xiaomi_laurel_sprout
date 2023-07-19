@@ -337,6 +337,22 @@ fingerprint_device_t* BiometricsFingerprint::openHal(const char* class_name) {
     return fp_device;
 }
 
+Return<void> BiometricsFingerprint::onHideUdfpsOverlay() {
+    if (mUdfpsHandler) {
+        mUdfpsHandler->onHideUdfpsOverlay();
+    }
+    
+    return Void();
+}
+
+Return<void> BiometricsFingerprint::onShowUdfpsOverlay() {
+    if (mUdfpsHandler) {
+        mUdfpsHandler->onShowUdfpsOverlay();
+    }
+    
+    return Void();
+}
+
 void BiometricsFingerprint::notify(const fingerprint_msg_t* msg) {
     BiometricsFingerprint* thisPtr =
             static_cast<BiometricsFingerprint*>(BiometricsFingerprint::getInstance());
