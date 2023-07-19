@@ -19,6 +19,9 @@ class UdfpsHandler {
 
     virtual void onAcquired(int32_t result, int32_t vendorCode) = 0;
     virtual void cancel() = 0;
+    
+    virtual void onHideUdfpsOverlay() = 0;
+    virtual void onShowUdfpsOverlay() = 0;
 };
 
 struct UdfpsHandlerFactory {
