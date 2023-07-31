@@ -209,6 +209,9 @@ Return<uint64_t> BiometricsFingerprint::setNotify(
 }
 
 Return<uint64_t> BiometricsFingerprint::preEnroll() {
+    if (mUdfpsHandler) {
+        mUdfpsHandler->onShowUdfpsOverlay();
+    }
     return mDevice->pre_enroll(mDevice);
 }
 
@@ -220,7 +223,7 @@ Return<RequestStatus> BiometricsFingerprint::enroll(const hidl_array<uint8_t, 69
 
 Return<RequestStatus> BiometricsFingerprint::postEnroll() {
     if (mUdfpsHandler) {
-        mUdfpsHandler->onFingerUp();
+        mUdfpsHandler->onHideUdfpsOverlay();
     }
     return ErrorFilter(mDevice->post_enroll(mDevice));
 }
