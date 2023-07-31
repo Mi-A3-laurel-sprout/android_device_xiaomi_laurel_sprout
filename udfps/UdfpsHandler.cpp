@@ -23,17 +23,21 @@
 #define PARAM_NIT_FOD 3
 #define PARAM_NIT_NONE 0
 
-#define FOD_HBM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display/fod_hbm"
-#define FOD_HBM_ON 1
-#define FOD_HBM_OFF 0
+//#define FOD_HBM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display/fod_hbm"
+//#define FOD_HBM_ON 1
+//#define FOD_HBM_OFF 0
 
-#define FOD_DIM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display/dimlayer_hbm"
-#define FOD_DIM_ON 1
-#define FOD_DIM_OFF 0
+//#define FOD_DIM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display/dimlayer_hbm"
+//#define FOD_DIM_ON 1
+//#define FOD_DIM_OFF 0
 
 #define FOD_STATUS_PATH "/sys/class/touch/tp_dev/fod_status"
 #define FOD_STATUS_ON 1
 #define FOD_STATUS_OFF 0
+
+#define DISPPARAM_PATH "/sys/class/drm/card0-DSI-1/disp_param"
+#define DISPPARAM_HBM_FOD_ON "0x1d20FE0"
+#define DISPPARAM_HBM_FOD_OFF "0x20f0F20"
 
 template <typename T>
 static void set(const std::string& path, const T& value) {
@@ -48,40 +52,38 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
     }
 
     void onFingerDown(uint32_t /*x*/, uint32_t /*y*/, float /*minor*/, float /*major*/) {
-        set(FOD_STATUS_PATH, FOD_STATUS_ON);
-        set(FOD_DIM_PATH, FOD_DIM_ON);
-        std::thread([this]() {
-            std::this_thread::sleep_for(std::chrono::milliseconds(90));
-            set(FOD_HBM_PATH, FOD_HBM_ON);
-            std::this_thread::sleep_for(std::chrono::milliseconds(40));
             mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_FOD);
-        }).detach();
     }
 
     void onFingerUp() {
-        set(FOD_STATUS_PATH, FOD_STATUS_OFF);
-        set(FOD_HBM_PATH, FOD_HBM_OFF);
-        std::thread([this]() {
-            std::this_thread::sleep_for(std::chrono::microseconds(30));
             mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
-            set(FOD_DIM_PATH, FOD_DIM_OFF);
-        }).detach();
     }
     
-    void onAcquired(int32_t /*result*/, int32_t /*vendorCode*/) {
-        // nothing
+    void onAcquired(int32_t result, int32_t vendorCode) {
+        if (result == FINGERPRINT_ACQUIRED_GOOD) {
+            mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
+            set(FOD_STATUS_PATH, FOD_STATUS_OFF);
+        } else if (vendorCode == 21 || vendorCode == 23) {
+            /*
+             * vendorCode = 21 waiting for fingerprint authentication
+             * vendorCode = 23 waiting for fingerprint enroll
+             */
+            set(FOD_STATUS_PATH, FOD_STATUS_ON);
+        }
     }
 
     void cancel() {
-        // nothing
+        mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
     }
     
     void onHideUdfpsOverlay() {
-        // nothing
+        set(DISPPARAM_PATH, DISPPARAM_HBM_FOD_OFF);
+        set(FOD_STATUS_PATH, FOD_STATUS_OFF);
     }
 
     void onShowUdfpsOverlay() {
-        // nothing
+        set(FOD_STATUS_PATH, FOD_STATUS_ON);
+        set(DISPPARAM_PATH, DISPPARAM_HBM_FOD_ON);
     }
   private:
     fingerprint_device_t *mDevice;
