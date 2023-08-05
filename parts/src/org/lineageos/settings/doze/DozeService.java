@@ -91,7 +91,7 @@ public class DozeService extends Service {
                @Override
                public void run() {
                    try {
-                       Thread.sleep(30);
+                       Thread.sleep(0);
                    } catch(Exception e) {}
                    if (Settings.System.getInt(getContentResolver(), HBM_SWITCH, 0) == 1)
                        FileUtils.writeLine(HBM_NODE, "0x1d20FE0");
@@ -139,33 +139,22 @@ public class DozeService extends Service {
 
         @Override
         public void onChange(boolean selfChange) {
-            int hbmEnabled_i = Settings.System.getInt(getContentResolver(), HBM_SWITCH, 0);
             if (DEBUG)
-                Log.d(TAG, "hbmEnabled: " + hbmEnabled_i);
-            if (hbmEnabled_i == 0) {
-                FileUtils.writeLine(HBM_NODE, "0x20f0F20");
-                if (mThread != null && mThread.isAlive()) {
-                    mThread.interrupt();
-                    mThread = null;
-                }
-                return;
-            }
-            if (mThread == null || !mThread.isAlive())
-                mThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            Thread.sleep(30);
-                        } catch (InterruptedException e) {
-                            return;
-                        }
-                        int hbmEnabled_ii = Settings.System.getInt(getContentResolver(), HBM_SWITCH, 0);
-                        if (DEBUG)
-                            Log.d(TAG, "Thread: hbmEnabled: " + hbmEnabled_ii);
-                        FileUtils.writeLine(HBM_NODE, hbmEnabled_ii == 1 ? "0x1d20FE0" : "0x20f0F20");
-                    }
-                });
-            mThread.start();
+               Log.d(TAG, "hbmEnabled");
+            new Thread(new Runnable() {
+               @Override
+               public void run()
+                {
+                    try {
+                       Thread.sleep(60);
+                   } catch (Exception e) {}
+                   if (Settings.System.getInt(getContentResolver(), HBM_SWITCH, 0) == 1) {
+                       FileUtils.writeLine(HBM_NODE, "0x1d20FE0");
+                   } else if (Settings.System.getInt(getContentResolver(), HBM_SWITCH, 1) == 0) {
+                       FileUtils.writeLine(HBM_NODE, "0x20f0F20");
+                   }
+               }
+            }).start();
         }
     }
 }

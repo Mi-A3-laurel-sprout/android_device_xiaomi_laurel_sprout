@@ -40,7 +40,6 @@ public class PickupSensor implements SensorEventListener {
 
     private static final boolean DEBUG = false;
     private static final String TAG = "PickupSensor";
-    private static final String HBM_SWITCH = "switch_hbm";
 
     private static final int MIN_PULSE_INTERVAL_MS = 2500;
 
@@ -76,7 +75,6 @@ public class PickupSensor implements SensorEventListener {
         if (event.values[0] == 1) {
             DozeUtils.launchDozePulse(mContext);
         }
-        Settings.System.putInt(mContext.getContentResolver(), HBM_SWITCH, 1);
     }
 
     @Override
