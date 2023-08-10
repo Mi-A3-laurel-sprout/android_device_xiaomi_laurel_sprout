@@ -59,17 +59,8 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
             mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
     }
     
-    void onAcquired(int32_t result, int32_t vendorCode) {
-        if (result == FINGERPRINT_ACQUIRED_GOOD) {
-            mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
-            set(FOD_STATUS_PATH, FOD_STATUS_OFF);
-        } else if (vendorCode == 21 || vendorCode == 23) {
-            /*
-             * vendorCode = 21 waiting for fingerprint authentication
-             * vendorCode = 23 waiting for fingerprint enroll
-             */
-            set(FOD_STATUS_PATH, FOD_STATUS_ON);
-        }
+    void onAcquired(int32_t /*result*/, int32_t /*vendorCode*/) {
+        // nothing
     }
 
     void cancel() {
@@ -83,7 +74,6 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
 
     void onShowUdfpsOverlay() {
         set(FOD_STATUS_PATH, FOD_STATUS_ON);
-        set(DISPPARAM_PATH, DISPPARAM_HBM_FOD_ON);
     }
   private:
     fingerprint_device_t *mDevice;
