@@ -38,6 +38,9 @@ AB_OTA_PARTITIONS += \
     product \
     odm
 
+# APEX
+DEXPREOPT_GENERATE_APEX_IMAGE := true
+
 # Boot animation
 TARGET_SCREEN_HEIGHT := 1560
 TARGET_SCREEN_WIDTH := 720
