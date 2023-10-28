@@ -388,6 +388,11 @@ PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_telephony.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_telephony.xml \
     frameworks/av/media/libstagefright/data/media_codecs_google_video.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_video.xml
 
+# Network
+PRODUCT_PACKAGES += \
+    libloc_net_iface \
+    libloc_net_iface.vendor
+
 # Offline charging images
 include $(LOCAL_PATH)/rootdir/charger/charger.mk
 
