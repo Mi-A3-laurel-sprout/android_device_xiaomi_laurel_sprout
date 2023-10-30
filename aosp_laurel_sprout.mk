@@ -47,7 +47,8 @@ PRODUCT_PACKAGES += \
     Aperture \
     RemovePackages \
     GalleryGo2 \
-    XiaomiParts
+    XiaomiParts \
+    gcamgo
 #    GalleryGo2
 #    FirefoxLite \
 #    GCamGo
