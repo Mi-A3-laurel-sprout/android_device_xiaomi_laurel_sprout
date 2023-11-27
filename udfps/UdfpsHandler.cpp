@@ -91,7 +91,7 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
 
                 mDevice->extCmd(mDevice, COMMAND_NIT, fodUi ? PARAM_NIT_FOD : PARAM_NIT_NONE);
                 if (fodStatusFd >= 0) {
-                    write(fodStatusFd, fodUi ? "1" : "0", 1);
+                    write(fodStatusFd, fodUi ? "1" : "-1", 1);
                 }
             }
         }).detach();
