@@ -13,50 +13,96 @@
 #include <poll.h>
 #include <thread>
 #include <unistd.h>
-#include <android-base/strings.h>
-#include <cutils/properties.h>
-#include <hardware/hardware.h>
-#include <inttypes.h>
-#include <fstream>
 
 #define COMMAND_NIT 10
-#define PARAM_NIT_FOD 3
+#define PARAM_NIT_FOD 1
 #define PARAM_NIT_NONE 0
 
-//#define FOD_HBM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display/fod_hbm"
-//#define FOD_HBM_ON 1
-//#define FOD_HBM_OFF 0
+static const char* kFodUiPaths[] = {
+        "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/fod_ui",
+        "/sys/devices/platform/soc/soc:qcom,dsi-display/fod_ui",
+};
 
-//#define FOD_DIM_PATH "/sys/devices/platform/soc/soc:qcom,dsi-display/dimlayer_hbm"
-//#define FOD_DIM_ON 1
-//#define FOD_DIM_OFF 0
+static const char* kFodStatusPaths[] = {
+        "/sys/devices/virtual/touch/tp_dev/fod_status",
+        "/sys/class/touch/tp_dev/fod_status",
+};
 
-#define FOD_STATUS_PATH "/sys/class/touch/tp_dev/fod_status"
-#define FOD_STATUS_ON 1
-#define FOD_STATUS_OFF 0
+static bool readBool(int fd) {
+    char c;
+    int rc;
 
-#define DISPPARAM_PATH "/sys/class/drm/card0-DSI-1/disp_param"
-#define DISPPARAM_HBM_FOD_ON "0x1d20FE0"
-#define DISPPARAM_HBM_FOD_OFF "0x20f0F20"
+    rc = lseek(fd, 0, SEEK_SET);
+    if (rc) {
+        LOG(ERROR) << "failed to seek fd, err: " << rc;
+        return false;
+    }
 
-template <typename T>
-static void set(const std::string& path, const T& value) {
-    std::ofstream file(path);
-    file << value;
+    rc = read(fd, &c, sizeof(char));
+    if (rc != 1) {
+        LOG(ERROR) << "failed to read bool from fd, err: " << rc;
+        return false;
+    }
+
+    return c != '0';
 }
 
 class LaurelSproutUdfpsHander : public UdfpsHandler {
   public:
     void init(fingerprint_device_t *device) {
         mDevice = device;
+
+        std::thread([this]() {
+            int fodUiFd;
+            for (auto& path : kFodUiPaths) {
+                fodUiFd = open(path, O_RDONLY);
+                if (fodUiFd >= 0) {
+                    break;
+                }
+            }
+
+            if (fodUiFd < 0) {
+                LOG(ERROR) << "failed to open fd, err: " << fodUiFd;
+                return;
+            }
+
+            int fodStatusFd;
+            for (auto& path : kFodStatusPaths) {
+                fodStatusFd = open(path, O_RDWR);
+                if (fodStatusFd >= 0) {
+                    break;
+                }
+            }
+
+            struct pollfd fodUiPoll = {
+                    .fd = fodUiFd,
+                    .events = POLLERR | POLLPRI,
+                    .revents = 0,
+            };
+
+            while (true) {
+                int rc = poll(&fodUiPoll, 1, -1);
+                if (rc < 0) {
+                    LOG(ERROR) << "failed to poll fd, err: " << rc;
+                    continue;
+                }
+
+                bool fodUi = readBool(fodUiFd);
+
+                mDevice->extCmd(mDevice, COMMAND_NIT, fodUi ? PARAM_NIT_FOD : PARAM_NIT_NONE);
+                if (fodStatusFd >= 0) {
+                    write(fodStatusFd, fodUi ? "1" : "0", 1);
+                }
+            }
+        }).detach();
     }
 
     void onFingerDown(uint32_t /*x*/, uint32_t /*y*/, float /*minor*/, float /*major*/) {
-            mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_FOD);
+        // nothing
     }
 
     void onFingerUp() {
-            mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
+        // nothing
     }
     
     void onAcquired(int32_t /*result*/, int32_t /*vendorCode*/) {
@@ -64,16 +110,7 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
     }
 
     void cancel() {
-        mDevice->extCmd(mDevice, COMMAND_NIT, PARAM_NIT_NONE);
-    }
-    
-    void onHideUdfpsOverlay() {
-        set(DISPPARAM_PATH, DISPPARAM_HBM_FOD_OFF);
-        set(FOD_STATUS_PATH, FOD_STATUS_OFF);
-    }
-
-    void onShowUdfpsOverlay() {
-        set(FOD_STATUS_PATH, FOD_STATUS_ON);
+        // nothing
     }
   private:
     fingerprint_device_t *mDevice;
