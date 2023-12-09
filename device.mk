@@ -39,13 +39,13 @@ PRODUCT_PACKAGES += \
     otapreopt_script
 
 AB_OTA_POSTINSTALL_CONFIG += \
-    RUN_POSTINSTALL_product=true \
-    POSTINSTALL_PATH_product=bin/check_dynamic_partitions \
-    FILESYSTEM_TYPE_product=ext4 \
-    POSTINSTALL_OPTIONAL_product=false
+    RUN_POSTINSTALL_vendor=true \
+    POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+    FILESYSTEM_TYPE_vendor=ext4 \
+    POSTINSTALL_OPTIONAL_vendor=true
 
 PRODUCT_PACKAGES += \
-    check_dynamic_partitions
+    checkpoint_gc
 
 # Boot control
 PRODUCT_PACKAGES += \
