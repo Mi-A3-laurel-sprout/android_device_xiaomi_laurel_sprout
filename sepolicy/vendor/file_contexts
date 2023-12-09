@@ -1,3 +1,13 @@
+# Block devices
+/dev/block/platform/soc/4804000.ufshc/by-name/vendor_a                       u:object_r:system_block_device:s0
+/dev/block/platform/soc/4804000.ufshc/by-name/vendor_b                       u:object_r:system_block_device:s0
+/dev/block/platform/soc/4804000.ufshc/by-name/system_a                       u:object_r:system_block_device:s0
+/dev/block/platform/soc/4804000.ufshc/by-name/system_b                       u:object_r:system_block_device:s0
+/dev/block/platform/soc/4804000.ufshc/by-name/product_a                      u:object_r:system_block_device:s0
+/dev/block/platform/soc/4804000.ufshc/by-name/product_b                      u:object_r:system_block_device:s0
+/dev/block/platform/soc/4804000.ufshc/by-name/odm_a                          u:object_r:system_block_device:s0
+/dev/block/platform/soc/4804000.ufshc/by-name/odm_b                          u:object_r:system_block_device:s0
+
 # Binder
 /dev/binderfs/vndbinder   u:object_r:vndbinder_exec:s0
 
