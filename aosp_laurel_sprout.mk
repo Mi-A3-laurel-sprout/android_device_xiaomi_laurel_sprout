@@ -64,8 +64,8 @@ WITH_GMS=true
 TARGET_GAPPS_ARCH := arm64
 
 # Use gestures by default
-PRODUCT_PRODUCT_PROPERTIES += \
-    ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.gestural
+#PRODUCT_PRODUCT_PROPERTIES += \
+#    ro.boot.vendor.overlay.theme=com.android.internal.systemui.navbar.gestural
 
 # Adb
 ifeq ($(TARGET_BUILD_VARIANT), userdebug, eng)
