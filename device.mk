@@ -154,7 +154,6 @@ PRODUCT_PACKAGES += \
     libqcomvoiceprocessing \
     libspkrprot \
     libtinycompress \
-    libtinycompress.vendor \
     libvolumelistener \
     tinymix
 
@@ -164,7 +163,6 @@ PRODUCT_PACKAGES += \
     audio.bluetooth.default \
     com.qualcomm.qti.bluetooth_audio@1.0.vendor \
     libbluetooth_audio_session \
-    libldacBT_dec \
     vendor.qti.hardware.bluetooth_audio@2.1.vendor \
     vendor.qti.hardware.btconfigstore@1.0.vendor \
     vendor.qti.hardware.btconfigstore@2.0.vendor
@@ -238,7 +236,6 @@ PRODUCT_COPY_FILES += \
 
 # Config Store
 PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.0-service \
     android.hardware.configstore@1.1-service 
 
 # Display
@@ -413,8 +410,7 @@ PRODUCT_PACKAGES += \
 
 # Power
 PRODUCT_PACKAGES += \
-    android.hardware.power@1.3-service.laurel_sprout-libperfmgr \
-    android.hardware.power.stats@1.0-service.pixel
+    android.hardware.power@1.3-service.laurel_sprout-libperfmgr
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/configs/powerhint.json:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.json \
