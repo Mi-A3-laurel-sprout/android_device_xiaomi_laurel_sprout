@@ -1,3 +1,0 @@
-allow logpersist logpersist:capability { dac_override  dac_read_search };
-allow logpersist shell_data_file:dir { add_name  open  read  write };
-allow logpersist shell_data_file:file { append  create  getattr  ioctl };

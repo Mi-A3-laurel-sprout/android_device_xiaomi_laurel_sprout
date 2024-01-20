@@ -1,4 +1,5 @@
-allow system_server vendor_camera_prop:file { r_file_perms };
+get_prop(system_server, vendor_camera_prop)
+get_prop(system_server, vendor_persist_camera_prop)
 allow system_server proc_net:file { getattr  read };
 allow system_server sysfs:file { getattr  open  read };
 

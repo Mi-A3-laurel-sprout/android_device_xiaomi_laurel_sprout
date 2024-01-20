@@ -6,14 +6,11 @@ audio_hal.period_multiplier             u:object_r:vendor_default_prop:s0
 persist.audio.fluence.voicecomm         u:object_r:vendor_default_prop:s0
 
 # Camera
-camera.clientname                       u:object_r:vendor_camera_prop:s0
-persist.camera.sensor.name              u:object_r:vendor_default_prop:s0
-persist.camera.module.info              u:object_r:vendor_default_prop:s0
-cameradaemon.SaveMemAtBoot              u:object_r:vendor_default_prop:s0
-cpp.set.clock                           u:object_r:vendor_default_prop:s0
-disable.cpp.power.collapse              u:object_r:vendor_default_prop:s0
-vendor.camera.                          u:object_r:vendor_camera_prop:s0
-vidc.enc.dcvs.extra-buff-count          u:object_r:vendor_default_prop:s0
+persist.camera.             u:object_r:vendor_camera_prop:s0
+camera.                     u:object_r:vendor_camera_prop:s0
+ro.camera.                  u:object_r:vendor_camera_prop:s0
+vendor.camera.              u:object_r:vendor_camera_prop:s0
+vidhance.                   u:object_r:vendor_camera_prop:s0
 
 # Fastbootd
 ro.fastbootd.available                  u:object_r:exported_default_prop:s0
@@ -31,10 +28,13 @@ vendor.fps_hal.                                 u:object_r:vendor_fp_prop:s0
 # Media
 gpu.stats.debug.level                   u:object_r:vendor_default_prop:s0
 
+# Miui
+ro.miui.                    u:object_r:exported_default_prop:s0
+ro.cust.test                u:object_r:exported_default_prop:s0
+
 # RIL
 ro.build.software.version               u:object_r:exported_default_prop:s0
 ro.fota.oem                             u:object_r:exported_default_prop:s0
-ro.miui.                                u:object_r:exported_default_prop:s0
 ro.product.mod_device                   u:object_r:exported_default_prop:s0
 
 # Thermal engine
