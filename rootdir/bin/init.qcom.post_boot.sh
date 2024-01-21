@@ -3239,8 +3239,8 @@ case "$target" in
             echo 0 > /proc/sys/kernel/sched_min_task_util_for_colocation
             echo 0 > /proc/sys/kernel/sched_little_cluster_coloc_fmin_khz
 
-            # Turn off scheduler boost at the end
-            echo 0 > /proc/sys/kernel/sched_boost
+            # Set scheduler boost parameters the end
+            echo 1 > /dev/stune/top-app/schedtune.boost
 
             # Turn on sleep modes.
             echo 0 > /sys/module/lpm_levels/parameters/sleep_disabled
