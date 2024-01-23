@@ -13,19 +13,29 @@
 #include <poll.h>
 #include <thread>
 #include <unistd.h>
+#include <android-base/strings.h>
+#include <cutils/properties.h>
+#include <hardware/hardware.h>
+#include <inttypes.h>
+#include <fstream>
 
 #define COMMAND_NIT 10
 #define PARAM_NIT_FOD 1
 #define PARAM_NIT_NONE 0
 
+#define FOD_STATUS_PATH "/sys/class/touch/tp_dev/fod_status"
+#define FOD_STATUS_ON 1
+#define FOD_STATUS_OFF 0
+
+template <typename T>
+static void set(const std::string& path, const T& value) {
+    std::ofstream file(path);
+    file << value;
+}
+
 static const char* kFodUiPaths[] = {
         "/sys/devices/platform/soc/soc:qcom,dsi-display-primary/fod_ui",
         "/sys/devices/platform/soc/soc:qcom,dsi-display/fod_ui",
-};
-
-static const char* kFodStatusPaths[] = {
-        "/sys/devices/virtual/touch/tp_dev/fod_status",
-        "/sys/class/touch/tp_dev/fod_status",
 };
 
 static bool readBool(int fd) {
@@ -66,14 +76,6 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
                 return;
             }
 
-            int fodStatusFd;
-            for (auto& path : kFodStatusPaths) {
-                fodStatusFd = open(path, O_RDWR);
-                if (fodStatusFd >= 0) {
-                    break;
-                }
-            }
-
             struct pollfd fodUiPoll = {
                     .fd = fodUiFd,
                     .events = POLLERR | POLLPRI,
@@ -90,9 +92,7 @@ class LaurelSproutUdfpsHander : public UdfpsHandler {
                 bool fodUi = readBool(fodUiFd);
 
                 mDevice->extCmd(mDevice, COMMAND_NIT, fodUi ? PARAM_NIT_FOD : PARAM_NIT_NONE);
-                if (fodStatusFd >= 0) {
-                    write(fodStatusFd, fodUi ? "1" : "-1", 1);
-                }
+                set(FOD_STATUS_PATH, FOD_STATUS_ON);
             }
         }).detach();
     }
