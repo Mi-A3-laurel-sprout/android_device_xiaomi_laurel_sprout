@@ -66,5 +66,7 @@ ifeq ($(TARGET_BUILD_VARIANT), userdebug, eng)
 # Get rid of that by overriding it in /product on eng builds
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.secure=0 \
-    ro.adb.secure=0
+    ro.adb.secure=0 \
+    persist.sys.usb.config=mtp,adb \
+    persist.vendor.usb.config=mtp,adb
 endif
