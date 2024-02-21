@@ -47,7 +47,8 @@ PRODUCT_PACKAGES += \
     RemovePackages \
     GalleryGo2
     
-# Syberia
+# ROM Props
+CUSTOM_BUILD_TYPE := OFFICIAL
 TARGET_BOOT_ANIMATION_RES := 1080
 FORCE_OTA := true
 TARGET_FACE_UNLOCK_SUPPORTED := true
