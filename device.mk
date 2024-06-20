@@ -26,7 +26,8 @@ PRODUCT_SOONG_NAMESPACES += \
     $(LOCAL_PATH) \
     hardware/interfaces \
     hardware/google/interfaces \
-    vendor/qcom/opensource/dataservices
+    vendor/qcom/opensource/dataservices \
+    hardware/xiaomi
 
 # A/B
 AB_OTA_POSTINSTALL_CONFIG += \
